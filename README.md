@@ -2,18 +2,10 @@
 
 This is the bitboard project.
 
-# Building and installing
 
-See the [BUILDING](BUILDING.md) document.
-
-# Contributing
-
-See the [CONTRIBUTING](CONTRIBUTING.md) document.
-
-# Licensing
-
-<!--
-Please go to https://choosealicense.com/licenses/ and choose a license that
-fits your needs. The recommended license for a project of this type is the
-Boost Software License 1.0.
--->
+[![codecov](https://codecov.io/gh/adidvar/bitboard/branch/master/graph/badge.svg)](https://codecov.io/gh/adidvar/bitboard)
+[![CI](https://github.com/adidvar/bitboard/actions/workflows/ci.yml/badge.svg)](https://github.com/adidvar/bitboard/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/github/v/release/adidvar/bitboard)](https://github.com/adidvar/bitboard/releases)
+[![Issues](https://img.shields.io/github/issues/adidvar/bitboard.svg)](https://github.com/adidvar/bitboard/issues)
+[![PRs](https://img.shields.io/github/issues-pr/adidvar/bitboard.svg)](https://github.com/adidvar/bitboard/pulls)
+[![Repo Size](https://img.shields.io/github/repo-size/adidvar/bitboard.svg)](https://github.com/adidvar/bitboard)

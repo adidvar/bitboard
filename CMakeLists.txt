@@ -17,10 +17,26 @@ include(cmake/variables.cmake)
 
 add_library(
     bitboard_bitboard
+
+    #sources
+
     source/bitboard.cpp
     source/zobrist.cpp
-    source/figures.cpp
+    source/figure.cpp
     source/fen.cpp
+
+    #headers
+
+    include/bitboard/bitboard.hpp
+    include/bitboard/color.hpp
+    include/bitboard/figure.hpp
+    include/bitboard/position.hpp
+    include/bitboard/turn.hpp
+    include/bitboard/utils/bit_const.hpp
+    include/bitboard/utils/bit_intrinsics.hpp
+    include/bitboard/utils/bit_operators.hpp
+    include/bitboard/utils/bit_utils.hpp
+    include/bitboard/utils/fen_parser.hpp
 )
 add_library(bitboard::bitboard ALIAS bitboard_bitboard)
 

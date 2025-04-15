@@ -1,231 +1,81 @@
 #pragma once
 
-#include "figures.hpp"
+#include <bitboard/bitboard_export.hpp>
+#include <bitboard/color.hpp>
+#include <bitboard/figure.hpp>
+#include <bitboard/position.hpp>
+#include <bitboard/turn.hpp>
 
-using bitboard = uint64_t;
-using BitBoardHash = uint64_t;
+namespace bitboard
+{
 
-class BitBoard
+using bitboard_field = uint64_t;
+using bitboard_hash = uint64_t;
+
+static constexpr auto kChessMaxTurns = 216;
+
+class BITBOARD_EXPORT BitBoard
 {
 public:
- static constexpr auto MaxTurns = 216;
+  enum struct Flags : uint8_t
+  {
+    kFlagsDefault = 0,
+    kFlagsColor = 1,
+    kFlagsElPassant = 2,
+    kFlagsWhiteOo = 4,
+    kFlagsWhiteOoo = 8,
+    kFlagsBlackOo = 16,
+    kFlagsBlackOoo = 32,
+    kFlagsUpperBound = 64  // upper bound for generator
+  };
 
- enum Flags {
-   flags_default = 0,
-   flags_color = 1,
-   flags_el_passant = 2,
-   flags_white_oo = 4,
-   flags_white_ooo = 8,
-   flags_black_oo = 16,
-   flags_black_ooo = 32,
-   flags_upper_bound = 64  // upper bound for branch-less generator
- };
+  BitBoard() = default;
+  BitBoard(BitBoard&&) = delete;
+  BitBoard(const BitBoard& board) = default;
 
- BitBoard();  ///< chess start position
- BitBoard(std::string_view fen_line);
- BitBoard(const BitBoard &board, Turn turn);
- [[nodiscard]] std::string fen() const;
+  explicit BitBoard(std::string_view fen_line);
 
- [[nodiscard]] BitBoard set(Position position, Figure figure) const;
- [[nodiscard]] BitBoard setFlags(Flags flags) const;
- [[nodiscard]] BitBoard setTurn(Turn turn) const;
+  BitBoard& operator=(BitBoard&&) = delete;
+  BitBoard& operator=(const BitBoard&) = default;
 
- [[nodiscard]] BitBoard swap(Position p1, Position p2) const;
+  void setTurn(Turn turn) const;
+  void setFlags(Flags flags) const;
+  void set(Position position, Figure figure) const;
 
- [[nodiscard]] Figure get(Position position) const noexcept;
- [[nodiscard]] Flags getFlags() const noexcept;
- [[nodiscard]] Color side() const noexcept;
+  void swap(Position pos_1, Position pos_2) const;
 
- int getTurns(Color color, Turn *out, bool &in_check) const;
+  [[nodiscard]] Turn turn() const;
+  [[nodiscard]] std::string fen() const;
+  [[nodiscard]] bitboard_hash hash() const;
+  [[nodiscard]] Color side() const noexcept;
+  [[nodiscard]] Flags flags() const noexcept;
+  [[nodiscard]] Figure get(Position position) const noexcept;
 
- [[nodiscard]] BitBoard executeTurn(Color color, Turn turn) const;
- [[nodiscard]] bool testTurn(Turn turn) const;
+  bool operator==(const BitBoard& board) const = default;
+  bool operator!=(const BitBoard& board) const = default;
 
- [[nodiscard]] BitBoardHash getHash() const;
- [[nodiscard]] Turn getTurn() const;
-
- bool operator==(const BitBoard &board) const = default;
- bool operator!=(const BitBoard &board) const = default;
-
- BitBoard(std::nullptr_t);  ///< empty board
 protected:
- constexpr void removeFigure(bitboard mask);
- constexpr void removeBlackFigure(bitboard mask);
- constexpr void removeWhiteFigure(bitboard mask);
- constexpr void copyWhites(const BitBoard &other);
- constexpr void copyBlacks(const BitBoard &other);
- constexpr void moveFromToWhite(bitboard from, bitboard to);
- constexpr void moveFromToBlack(bitboard from, bitboard to);
- constexpr void promoteWhiteFigure(bitboard position, Figure figure);
- constexpr void promoteBlackFigure(bitboard position, Figure figure);
- constexpr bitboard getWhites() const;
- constexpr bitboard getBlacks() const;
- constexpr bitboard getAll() const;
-
- static const char *const kStartPosition;
- static const BitBoard kStartBitBoard;
-
- // bitboards white
- bitboard m_w_p = 0;
- bitboard m_w_n = 0;
- bitboard m_w_b = 0;
- bitboard m_w_r = 0;
- bitboard m_w_q = 0;
- bitboard m_w_k = 0;
- // bitboards blackk
- bitboard m_b_p = 0;
- bitboard m_b_n = 0;
- bitboard m_b_b = 0;
- bitboard m_b_r = 0;
- bitboard m_b_q = 0;
- bitboard m_b_k = 0;
- // state init
- BitBoardHash m_hash = 0;
- Turn m_turn{};
- // additional state
- Flags m_flags = flags_default;
-
- template <BitBoard::Flags flags>
- friend class BitBoardHelper;
+  // bitboards white
+  bitboard_field m_white_pawn = 0;
+  bitboard_field m_white_knight = 0;
+  bitboard_field m_white_bishop = 0;
+  bitboard_field m_white_rook = 0;
+  bitboard_field m_white_queen = 0;
+  bitboard_field m_white_king = 0;
+  // bitboards black
+  bitboard_field m_black_pawn = 0;
+  bitboard_field m_black_knight = 0;
+  bitboard_field m_black_bishop = 0;
+  bitboard_field m_black_rook = 0;
+  bitboard_field m_black_queen = 0;
+  bitboard_field m_black_king = 0;
+  // other state
+  bitboard_hash m_hash = 0;
+  Turn m_prev_turn();
+  Flags m_flags = Flags::kFlagsDefault;
 };
 
-constexpr void BitBoard::removeFigure(bitboard mask)
-{
-    removeBlackFigure(mask);
-    removeWhiteFigure(mask);
-}
+BITBOARD_EXPORT extern const char* const kStartPosition;
+BITBOARD_EXPORT extern const BitBoard kStartBitBoard;
 
-constexpr void BitBoard::removeBlackFigure(bitboard mask)
-{
-    m_b_p &= mask;
-    m_b_n &= mask;
-    m_b_b &= mask;
-    m_b_r &= mask;
-    m_b_q &= mask;
-    m_b_k &= mask;
-}
-
-constexpr void BitBoard::removeWhiteFigure(bitboard mask)
-{
-    m_w_p &= mask;
-    m_w_n &= mask;
-    m_w_b &= mask;
-    m_w_r &= mask;
-    m_w_q &= mask;
-    m_w_k &= mask;
-}
-
-constexpr void BitBoard::copyWhites(const BitBoard &other)
-{
-    m_w_p = other.m_w_p;
-    m_w_n = other.m_w_n;
-    m_w_b = other.m_w_b;
-    m_w_r = other.m_w_r;
-    m_w_q = other.m_w_q;
-    m_w_k = other.m_w_k;
-}
-
-constexpr void BitBoard::copyBlacks(const BitBoard &other)
-{
-    m_b_p = other.m_b_p;
-    m_b_n = other.m_b_n;
-    m_b_b = other.m_b_b;
-    m_b_r = other.m_b_r;
-    m_b_q = other.m_b_q;
-    m_b_k = other.m_b_k;
-}
-
-constexpr bitboard BitBoard::getWhites() const
-{
-    return m_w_p | m_w_n | m_w_b | m_w_r | m_w_q | m_w_k;
-}
-
-constexpr bitboard BitBoard::getBlacks() const
-{
-    return m_b_p | m_b_n | m_b_b | m_b_r | m_b_q | m_b_k;
-}
-
-constexpr bitboard BitBoard::getAll() const
-{
-    return getWhites() | getBlacks();
-}
-
-constexpr void BitBoard::moveFromToWhite(bitboard from, bitboard to)
-{
-    m_w_p |= ((m_w_p & from) > 0) * to;
-    m_w_p &= ~from;
-
-    m_w_n |= ((m_w_n & from) > 0) * to;
-    m_w_n &= ~from;
-
-    m_w_b |= ((m_w_b & from) > 0) * to;
-    m_w_b &= ~from;
-
-    m_w_r |= ((m_w_r & from) > 0) * to;
-    m_w_r &= ~from;
-
-    m_w_k |= ((m_w_k & from) > 0) * to;
-    m_w_k &= ~from;
-
-    m_w_q |= ((m_w_q & from) > 0) * to;
-    m_w_q &= ~from;
-}
-
-constexpr void BitBoard::moveFromToBlack(bitboard from, bitboard to)
-{
-    m_b_p |= ((m_b_p & from) > 0) * to;
-    m_b_p &= ~from;
-
-    m_b_n |= ((m_b_n & from) > 0) * to;
-    m_b_n &= ~from;
-
-    m_b_b |= ((m_b_b & from) > 0) * to;
-    m_b_b &= ~from;
-
-    m_b_r |= ((m_b_r & from) > 0) * to;
-    m_b_r &= ~from;
-
-    m_b_k |= ((m_b_k & from) > 0) * to;
-    m_b_k &= ~from;
-
-    m_b_q |= ((m_b_q & from) > 0) * to;
-    m_b_q &= ~from;
-}
-
-constexpr void BitBoard::promoteWhiteFigure(bitboard position, Figure figure)
-{
-    switch (figure) {
-    case Figure::Knight:
-        m_w_n |= position;
-        break;
-    case Figure::Bishop:
-        m_w_b |= position;
-        break;
-    case Figure::Rook:
-        m_w_r |= position;
-        break;
-    case Figure::Queen:
-        m_w_q |= position;
-        break;
-    }
-}
-constexpr void BitBoard::promoteBlackFigure(bitboard position, Figure figure)
-{
-    switch (figure) {
-    case Figure::Knight:
-        m_b_n |= position;
-        break;
-    case Figure::Bishop:
-        m_b_b |= position;
-        break;
-    case Figure::Rook:
-        m_b_r |= position;
-        break;
-    case Figure::Queen:
-        m_b_q |= position;
-        break;
-    }
-}
-
-inline BitBoard::BitBoard(const BitBoard &board, Turn turn)
-    : BitBoard(board.executeTurn(board.side(), turn)) {}
+}  // namespace bitboard

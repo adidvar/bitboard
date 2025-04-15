@@ -4,7 +4,7 @@
 # customization issues
 set(
     COVERAGE_TRACE_COMMAND
-    lcov -c -q
+    lcov --ignore-errors inconsistent,inconsistent -c -q
     -o "${PROJECT_BINARY_DIR}/coverage.info"
     -d "${PROJECT_BINARY_DIR}"
     --include "${PROJECT_SOURCE_DIR}/*"
@@ -14,7 +14,7 @@ set(
 
 set(
     COVERAGE_HTML_COMMAND
-    genhtml --legend -f -q
+    genhtml --ignore-errors inconsistent,inconsistent --legend -f -q
     "${PROJECT_BINARY_DIR}/coverage.info"
     -p "${PROJECT_SOURCE_DIR}"
     -o "${PROJECT_BINARY_DIR}/coverage_html"
