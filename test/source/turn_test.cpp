@@ -1,7 +1,7 @@
-// #include <catch2/catch_test_macros.hpp>
-// #include <figures.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <bitboard/turn.hpp>
 
-// TEST_CASE("Turn from string")
+// TEST_CASE("Turn from strng")
 // {
 //   REQUIRE(Turn("a1a8").toString() == "a1a8");
 //   REQUIRE(Turn("a2h8").toString() == "a2h8");

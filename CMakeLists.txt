@@ -21,6 +21,7 @@ add_library(
     #sources
 
     source/bitboard.cpp
+    source/position.cpp
     source/zobrist.cpp
     source/figure.cpp
     source/fen.cpp
