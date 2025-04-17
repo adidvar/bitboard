@@ -269,7 +269,7 @@ constexpr auto Position::rotate() const noexcept -> Position
 inline auto Position::toString() const -> std::string
 {
   if (!valid()) {
-    return "--";
+    return "-";
   }
   std::string str = "00";
   str[0] = static_cast<char>('a' + x());

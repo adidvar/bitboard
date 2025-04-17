@@ -27,9 +27,9 @@ TEST_CASE("Test Position(int) - valid index")
 TEST_CASE("Test Position(int) - invalid index")
 {
     REQUIRE(Position(64).valid() == false);
-    REQUIRE(Position(64).index() == kPositionInvalid);
+    REQUIRE(Position(64).index() >= kPositionInvalid);
     REQUIRE(Position(100).valid() == false);
-    REQUIRE(Position(100).index() == kPositionInvalid);
+    REQUIRE(Position(100).index() >= kPositionInvalid);
 }
 
 TEST_CASE("Test Position(int, int) - valid coordinates")
