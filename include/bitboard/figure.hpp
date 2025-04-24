@@ -5,14 +5,14 @@
 namespace bitboard
 {
 /**
-* @brief Enumerates chess figures with color encoding.
-*
-* This enum represents different chess pieces, including their color.
-* Positive values represent white pieces, negative values represent black pieces,
-* and zero represents an empty square.  The numerical value (absolute value)
-* also corresponds to a simple ordering of piece types, useful in some
-* evaluation functions.
-*/
+ * @brief Enumerates chess figures with color encoding.
+ *
+ * This enum represents different chess pieces, including their color.
+ * Positive values represent white pieces, negative values represent black
+ * pieces, and zero represents an empty square.  The numerical value (absolute
+ * value) also corresponds to a simple ordering of piece types, useful in some
+ * evaluation functions.
+ */
 enum struct Figure : int8_t
 {
   kEmpty = 0,

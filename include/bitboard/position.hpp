@@ -14,7 +14,8 @@ namespace bitboard
 constexpr uint8_t kBoardSize = 8;
 
 /**
- * @brief Constant representing the maximum valid position index on the board (0 to 63).
+ * @brief Constant representing the maximum valid position index on the board (0
+ * to 63).
  */
 constexpr uint8_t kPositionSize = 63;
 
@@ -53,146 +54,152 @@ constexpr uint8_t kPositionInvalid = 64;
 class BITBOARD_EXPORT Position
 {
 public:
-    using int_t = uint8_t;
-    /**
-     * @brief Default constructor.
-     *
-     * Initializes the position to an invalid state.
-     */
-    constexpr Position() noexcept;
+  using int_t = uint8_t;
+  /**
+   * @brief Default constructor.
+   *
+   * Initializes the position to an invalid state.
+   */
+  constexpr Position() noexcept;
 
-    /**
-     * @brief Explicit constructor from a linear index.
-     *
-     * Initializes the position with the given index. If the index is out of
-     * the valid range (0-63), the position is invalidated.
-     *
-     * @param index The linear index of the position (0-63).
-     */
-    constexpr explicit Position(int_t index) noexcept;
+  /**
+   * @brief Explicit constructor from a linear index.
+   *
+   * Initializes the position with the given index. If the index is out of
+   * the valid range (0-63), the position is invalidated.
+   *
+   * @param index The linear index of the position (0-63).
+   */
+  constexpr explicit Position(int_t index) noexcept;
 
-    /**
-     * @brief Constructor from x and y coordinates.
-     *
-     * Initializes the position with the given x and y coordinates (0-7).
-     * The x-coordinate represents the column (A=0, H=7), and the y-coordinate
-     * represents the row (1=0, 8=7). If the coordinates are out of the valid
-     * range, the position is invalidated.
-     *
-     * @param x_pos The x-coordinate (column) of the position (0-7).
-     * @param y_pos The y-coordinate (row) of the position (0-7).
-     */
-    constexpr Position(int_t x_pos, int_t y_pos) noexcept;
+  /**
+   * @brief Constructor from x and y coordinates.
+   *
+   * Initializes the position with the given x and y coordinates (0-7).
+   * The x-coordinate represents the column (A=0, H=7), and the y-coordinate
+   * represents the row (1=0, 8=7). If the coordinates are out of the valid
+   * range, the position is invalidated.
+   *
+   * @param x_pos The x-coordinate (column) of the position (0-7).
+   * @param y_pos The y-coordinate (row) of the position (0-7).
+   */
+  constexpr Position(int_t x_pos, int_t y_pos) noexcept;
 
-    /**
-     * @brief Explicit constructor from a string representation (e.g., "a1", "H8").
-     *
-     * Initializes the position from a standard algebraic notation string.
-     * The string should be two characters long, with the first character
-     * being a lowercase letter from 'a' to 'h' (representing the column)
-     * and the second character being a digit from '1' to '8' (representing the row).
-     * If the string is invalid, the position is invalidated.
-     *
-     * @param string The algebraic notation string representing the position.
-     */
-    constexpr explicit Position(std::string_view string);
+  /**
+   * @brief Explicit constructor from a string representation (e.g., "a1",
+   * "H8").
+   *
+   * Initializes the position from a standard algebraic notation string.
+   * The string should be two characters long, with the first character
+   * being a lowercase letter from 'a' to 'h' (representing the column)
+   * and the second character being a digit from '1' to '8' (representing the
+   * row). If the string is invalid, the position is invalidated.
+   *
+   * @param string The algebraic notation string representing the position.
+   */
+  constexpr explicit Position(std::string_view string);
 
-    /**
-     * @brief Checks if the position is valid.
-     *
-     * A position is considered valid if its internal index is within the
-     * range 0 to 63.
-     *
-     * @return True if the position is valid, false otherwise.
-     */
-    [[nodiscard]] constexpr auto valid() const noexcept -> bool;
+  /**
+   * @brief Checks if the position is valid.
+   *
+   * A position is considered valid if its internal index is within the
+   * range 0 to 63.
+   *
+   * @return True if the position is valid, false otherwise.
+   */
+  [[nodiscard]] constexpr auto valid() const noexcept -> bool;
 
-    /**
-     * @brief Returns the linear index of the position.
-     *
-     * The index ranges from 0 (A1) to 63 (H8).
-     *
-     * @return The linear index of the position.
-     */
-    [[nodiscard]] constexpr auto index() const noexcept -> int_t;
+  /**
+   * @brief Returns the linear index of the position.
+   *
+   * The index ranges from 0 (A1) to 63 (H8).
+   *
+   * @return The linear index of the position.
+   */
+  [[nodiscard]] constexpr auto index() const noexcept -> int_t;
 
-    /**
-     * @brief Returns the x-coordinate (column) of the position.
-     *
-     * The x-coordinate ranges from 0 (A) to 7 (H).
-     *
-     * @return The x-coordinate of the position.
-     */
-    [[nodiscard]] auto x() const -> int_t;
+  /**
+   * @brief Returns the x-coordinate (column) of the position.
+   *
+   * The x-coordinate ranges from 0 (A) to 7 (H).
+   *
+   * @return The x-coordinate of the position.
+   */
+  [[nodiscard]] auto x() const -> int_t;
 
-    /**
-     * @brief Returns the y-coordinate (row) of the position.
-     *
-     * The y-coordinate ranges from 0 (rank 1) to 7 (rank 8).
-     *
-     * @return The y-coordinate of the position.
-     */
-    [[nodiscard]] auto y() const -> int_t;
+  /**
+   * @brief Returns the y-coordinate (row) of the position.
+   *
+   * The y-coordinate ranges from 0 (rank 1) to 7 (rank 8).
+   *
+   * @return The y-coordinate of the position.
+   */
+  [[nodiscard]] auto y() const -> int_t;
 
-    /**
-     * @brief Rotates the position 180 degrees on the board.
-     *
-     * This operation effectively mirrors the position across the center of the board.
-     * An invalid position remains invalid after rotation.
-     *
-     * @return A new Position object representing the rotated position. Returns an invalid Position if the original is invalid.
-     */
-    [[nodiscard]] constexpr auto rotate() const noexcept -> Position;
+  /**
+   * @brief Rotates the position 180 degrees on the board.
+   *
+   * This operation effectively mirrors the position across the center of the
+   * board. An invalid position remains invalid after rotation.
+   *
+   * @return A new Position object representing the rotated position. Returns an
+   * invalid Position if the original is invalid.
+   */
+  [[nodiscard]] constexpr auto rotate() const noexcept -> Position;
 
-    /**
-     * @brief Converts the position to its algebraic notation string representation.
-     *
-     * For example, index 0 becomes "a1", and index 63 becomes "h8".
-     *
-     * @return The algebraic notation string of the position.
-     */
-    [[nodiscard]] auto toString() const -> std::string;
+  /**
+   * @brief Converts the position to its algebraic notation string
+   * representation.
+   *
+   * For example, index 0 becomes "a1", and index 63 becomes "h8".
+   *
+   * @return The algebraic notation string of the position.
+   */
+  [[nodiscard]] auto toString() const -> std::string;
 
-    /**
-     * @brief Equality comparison operator.
-     *
-     * Checks if two Position objects represent the same position on the board.
-     *
-     * @param pos The other Position object to compare with.
-     * @return True if the positions are equal, false otherwise.
-     */
-    constexpr auto operator==(const Position& pos) const noexcept -> bool;
+  /**
+   * @brief Equality comparison operator.
+   *
+   * Checks if two Position objects represent the same position on the board.
+   *
+   * @param pos The other Position object to compare with.
+   * @return True if the positions are equal, false otherwise.
+   */
+  constexpr auto operator==(const Position& pos) const noexcept -> bool;
 
-    /**
-     * @brief Inequality comparison operator.
-     *
-     * Checks if two Position objects represent different positions on the board.
-     *
-     * @param pos The other Position object to compare with.
-     * @return True if the positions are different, false otherwise.
-     */
-    constexpr auto operator!=(const Position& pos) const noexcept -> bool;
+  /**
+   * @brief Inequality comparison operator.
+   *
+   * Checks if two Position objects represent different positions on the board.
+   *
+   * @param pos The other Position object to compare with.
+   * @return True if the positions are different, false otherwise.
+   */
+  constexpr auto operator!=(const Position& pos) const noexcept -> bool;
 
-    /**
-     * @brief Less than comparison operator.
-     *
-     * Compares two Position objects based on their internal index.
-     *
-     * @param pos The other Position object to compare with.
-     * @return True if the current position's index is less than the other position's index, false otherwise.
-     */
-    constexpr auto operator<(const Position& pos) const noexcept -> bool;
+  /**
+   * @brief Less than comparison operator.
+   *
+   * Compares two Position objects based on their internal index.
+   *
+   * @param pos The other Position object to compare with.
+   * @return True if the current position's index is less than the other
+   * position's index, false otherwise.
+   */
+  constexpr auto operator<(const Position& pos) const noexcept -> bool;
 
-    /**
-     * @brief Unsafely constructs a Position object from a (x,y) without validity checks.
-     */
-    constexpr static Position unsafeConstruct(int_t x, int_t y);
+  /**
+   * @brief Unsafely constructs a Position object from a (x,y) without validity
+   * checks.
+   */
+  constexpr static Position unsafeConstruct(int_t x, int_t y);
 
 private:
-    /**
-     * @brief The internal representation of the position as a linear index (0-63) or kPositionInvalid (64).
-     */
-    uint8_t m_index;
+  /**
+   * @brief The internal representation of the position as a linear index (0-63)
+   * or kPositionInvalid (64).
+   */
+  uint8_t m_index;
 };
 
 constexpr Position::Position() noexcept
@@ -208,8 +215,9 @@ constexpr Position::Position(uint8_t index) noexcept
 constexpr Position::Position(uint8_t x_pos, uint8_t y_pos) noexcept
     : m_index(static_cast<uint8_t>((y_pos * kBoardSize) + x_pos))
 {
-    if(x_pos > 7 || y_pos > 7)
-        m_index = kPositionInvalid;
+  if (x_pos > 7 || y_pos > 7) {
+    m_index = kPositionInvalid;
+  }
 }
 
 constexpr Position::Position(std::string_view string)
@@ -236,12 +244,12 @@ constexpr auto Position::index() const noexcept -> uint8_t
 
 inline auto Position::x() const -> uint8_t
 {
-    return m_index % kBoardSize;
+  return m_index % kBoardSize;
 }
 
 inline auto Position::y() const -> uint8_t
 {
-    return m_index / kBoardSize;
+  return m_index / kBoardSize;
 }
 
 constexpr auto Position::rotate() const noexcept -> Position
@@ -285,8 +293,9 @@ constexpr Position::int_t operator"" _pv(const char* str, const std::size_t len)
   return Position(std::string_view(str, len)).index();
 }
 
-constexpr Position Position::unsafeConstruct(int_t x, int_t y){
-    return Position(static_cast<uint8_t>((y * kBoardSize) + x));
+constexpr Position Position::unsafeConstruct(int_t x, int_t y)
+{
+  return Position(static_cast<uint8_t>((y * kBoardSize) + x));
 }
 
 }  // namespace bitboard

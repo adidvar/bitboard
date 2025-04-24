@@ -6,8 +6,8 @@ namespace bitboard
 {
 
 /**
-* @brief Enumerates the two colors in chess.
-*/
+ * @brief Enumerates the two colors in chess.
+ */
 enum struct Color : int8_t
 {
   kWhite = -1,
