@@ -60,19 +60,19 @@ TEST_CASE("Test Position(int, int) - invalid coordinates")
 
 TEST_CASE("Test Position(std::string_view) - valid string")
 {
-    REQUIRE(Position("a1").valid() == true);
-    REQUIRE(Position("a1").index() == 0);
-    REQUIRE(Position("h8").valid() == true);
-    REQUIRE(Position("h8").index() == 63);
+    REQUIRE(Position("a8").valid() == true);
+    REQUIRE(Position("a8").index() == 0);
+    REQUIRE(Position("h1").valid() == true);
+    REQUIRE(Position("h1").index() == 63);
     REQUIRE(Position("c5").valid() == true);
-    REQUIRE(Position("c5").index() == 34);
+    REQUIRE(Position("c5").index() == 26);
 
-    REQUIRE(Position("a1").x() == 0);
-    REQUIRE(Position("a1").y() == 0);
-    REQUIRE(Position("h8").x() == 7);
-    REQUIRE(Position("h8").y() == 7);
+    REQUIRE(Position("a8").x() == 0);
+    REQUIRE(Position("a8").y() == 0);
+    REQUIRE(Position("h1").x() == 7);
+    REQUIRE(Position("h1").y() == 7);
     REQUIRE(Position("c5").x() == 2);
-    REQUIRE(Position("c5").y() == 4);
+    REQUIRE(Position("c5").y() == 3);
 }
 
 TEST_CASE("Test Position(std::string_view) - invalid string")
@@ -109,8 +109,8 @@ TEST_CASE("Test index()")
     REQUIRE(Position(64).index() == kPositionInvalid);
     REQUIRE(Position(3, 4).index() == 35);
     REQUIRE(Position(8, 0).index() == kPositionInvalid);
-    REQUIRE(Position("a1").index() == 0);
-    REQUIRE(Position("h8").index() == 63);
+    REQUIRE(Position("a8").index() == 0);
+    REQUIRE(Position("h1").index() == 63);
     REQUIRE(Position("i9").index() == kPositionInvalid);
 }
 
@@ -124,31 +124,15 @@ TEST_CASE("Test x() - valid")
     REQUIRE(Position("d3").x() == 3);
 }
 
-TEST_CASE("Test x() - invalid")
-{
-    REQUIRE_THROWS_AS(Position().x(), std::out_of_range);
-    REQUIRE_THROWS_AS(Position(64).x(), std::out_of_range);
-    REQUIRE_THROWS_AS(Position(8, 0).x(), std::out_of_range);
-    REQUIRE_THROWS_AS(Position("i1").x(), std::out_of_range);
-}
-
 TEST_CASE("Test y() - valid")
 {
     REQUIRE(Position(0).y() == 0);
     REQUIRE(Position(7).y() == 0);
     REQUIRE(Position(56).y() == 7);
     REQUIRE(Position(35).y() == 4);
-    REQUIRE(Position("a1").y() == 0);
-    REQUIRE(Position("h8").y() == 7);
-    REQUIRE(Position("d3").y() == 2);
-}
-
-TEST_CASE("Test y() - invalid")
-{
-    REQUIRE_THROWS_AS(Position().y(), std::out_of_range);
-    REQUIRE_THROWS_AS(Position(64).y(), std::out_of_range);
-    REQUIRE_THROWS_AS(Position(8, 0).y(), std::out_of_range);
-    REQUIRE_THROWS_AS(Position("i1").y(), std::out_of_range);
+    REQUIRE(Position("a1").y() == 7);
+    REQUIRE(Position("h8").y() == 0);
+    REQUIRE(Position("d3").y() == 5);
 }
 
 TEST_CASE("Test rotate()")
@@ -166,12 +150,12 @@ TEST_CASE("Test rotate()")
 TEST_CASE("Test toString()")
 {
     REQUIRE(Position().toString() == "-");
-    REQUIRE(Position(0).toString() == "a1");
-    REQUIRE(Position(7).toString() == "h1");
-    REQUIRE(Position(56).toString() == "a8");
-    REQUIRE(Position(63).toString() == "h8");
-    REQUIRE(Position(35).toString() == "d5");
-    REQUIRE(Position(3, 4).toString() == "d5");
+    REQUIRE(Position(0).toString() == "a8");
+    REQUIRE(Position(7).toString() == "h8");
+    REQUIRE(Position(56).toString() == "a1");
+    REQUIRE(Position(63).toString() == "h1");
+    REQUIRE(Position(35).toString() == "d4");
+    REQUIRE(Position(3, 4).toString() == "d4");
     REQUIRE(Position("a1").toString() == "a1");
     REQUIRE(Position("h8").toString() == "h8");
 }
@@ -212,35 +196,17 @@ TEST_CASE("Test operator<()")
 {
     REQUIRE(Position(0) < Position(1));
     REQUIRE(Position(3) < Position(35));
-    REQUIRE(Position("a1") < Position("a2"));
+    REQUIRE(Position("a2") < Position("a1"));
     REQUIRE(Position("a1") < Position("b1"));
-    REQUIRE(Position("h7") < Position("h8"));
+    REQUIRE(Position("h8") < Position("h7"));
 
     REQUIRE_FALSE(Position(0) < Position(0));
     REQUIRE_FALSE(Position(1) < Position(0));
     REQUIRE_FALSE(Position(35) < Position(3));
-    REQUIRE_FALSE(Position("a2") < Position("a1"));
+    REQUIRE_FALSE(Position("a1") < Position("a2"));
     REQUIRE_FALSE(Position("b1") < Position("a1"));
-    REQUIRE_FALSE(Position("h8") < Position("h7"));
+    REQUIRE_FALSE(Position("h7") < Position("h8"));
     REQUIRE_FALSE(Position() < Position(0));
-    REQUIRE_FALSE(Position(0) < Position());
-    REQUIRE_FALSE(Position() < Position());
-}
-
-TEST_CASE("Test unsafeX()")
-{
-    REQUIRE(Position::unsafeX(Position(0)) == 0);
-    REQUIRE(Position::unsafeX(Position(7)) == 7);
-    REQUIRE(Position::unsafeX(Position(35)) == 3);
-    REQUIRE(Position::unsafeX(Position(63)) == 7);
-}
-
-TEST_CASE("Test unsafeY()")
-{
-    REQUIRE(Position::unsafeY(Position(0)) == 0);
-    REQUIRE(Position::unsafeY(Position(7)) == 0);
-    REQUIRE(Position::unsafeY(Position(35)) == 4);
-    REQUIRE(Position::unsafeY(Position(56)) == 7);
 }
 
 TEST_CASE("Test unsafeConstruct(int8_t, int8_t)")

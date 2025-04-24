@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <stdexcept>
 #include <string>
 #include <string_view>
 
@@ -33,21 +32,21 @@ constexpr uint8_t kPositionInvalid = 64;
  * is represented by the index `kPositionInvalid` (64).
  *
  * +--+--+--+--+--+--+--+--+
- * | 0| 1| 2| 3| 4| 5| 6| 7|
+ * | 0| 1| 2| 3| 4| 5| 6| 7| 8
  * +--+--+--+--+--+--+--+--+
- * | 8| 9|10|11|12|13|14|15|
+ * | 8| 9|10|11|12|13|14|15| 7
  * +--+--+--+--+--+--+--+--+
- * |16|17|18|19|20|21|22|23|
+ * |16|17|18|19|20|21|22|23| 6
  * +--+--+--+--+--+--+--+--+
- * |24|25|26|27|28|29|30|31|
+ * |24|25|26|27|28|29|30|31| 5
  * +--+--+--+--+--+--+--+--+
- * |32|33|34|35|36|37|38|39|
+ * |32|33|34|35|36|37|38|39| 4
  * +--+--+--+--+--+--+--+--+
- * |40|41|42|43|44|45|46|47|
+ * |40|41|42|43|44|45|46|47| 3
  * +--+--+--+--+--+--+--+--+
- * |48|49|50|51|52|53|54|55|
+ * |48|49|50|51|52|53|54|55| 2
  * +--+--+--+--+--+--+--+--+
- * |56|57|58|59|60|61|62|63|
+ * |56|57|58|59|60|61|62|63| 1
  * +--+--+--+--+--+--+--+--+
  *
  */
@@ -123,7 +122,6 @@ public:
      * The x-coordinate ranges from 0 (A) to 7 (H).
      *
      * @return The x-coordinate of the position.
-     * @throws std::out_of_range If the position is invalid.
      */
     [[nodiscard]] auto x() const -> int_t;
 
@@ -133,7 +131,6 @@ public:
      * The y-coordinate ranges from 0 (rank 1) to 7 (rank 8).
      *
      * @return The y-coordinate of the position.
-     * @throws std::out_of_range If the position is invalid.
      */
     [[nodiscard]] auto y() const -> int_t;
 
@@ -185,16 +182,6 @@ public:
      * @return True if the current position's index is less than the other position's index, false otherwise.
      */
     constexpr auto operator<(const Position& pos) const noexcept -> bool;
-
-    /**
-     * @brief Returns the unsafe x-coordinate (column) of a Position without validity checks.
-     */
-    constexpr static uint8_t unsafeX(Position pos);
-
-    /**
-     * @brief Returns the unsafe y-coordinate (row) of a Position without validity checks.
-     */
-    constexpr static uint8_t unsafeY(Position pos);
 
     /**
      * @brief Unsafely constructs a Position object from a (x,y) without validity checks.
@@ -249,15 +236,11 @@ constexpr auto Position::index() const noexcept -> uint8_t
 
 inline auto Position::x() const -> uint8_t
 {
-    if(!valid())
-        throw std::out_of_range("called x() on invalid position");
     return m_index % kBoardSize;
 }
 
 inline auto Position::y() const -> uint8_t
 {
-    if(!valid())
-        throw std::out_of_range("called y() on invalid position");
     return m_index / kBoardSize;
 }
 
@@ -300,14 +283,6 @@ constexpr Position operator"" _p(const char* str, const std::size_t len)
 constexpr Position::int_t operator"" _pv(const char* str, const std::size_t len)
 {
   return Position(std::string_view(str, len)).index();
-}
-
-constexpr uint8_t Position::unsafeX(Position pos){
-    return pos.m_index % kBoardSize;
-}
-
-constexpr uint8_t Position::unsafeY(Position pos){
-    return pos.m_index / kBoardSize;
 }
 
 constexpr Position Position::unsafeConstruct(int_t x, int_t y){
