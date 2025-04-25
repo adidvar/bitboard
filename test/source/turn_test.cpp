@@ -1,102 +1,99 @@
-// #include <catch2/catch_test_macros.hpp>
-// #include <figures.hpp>
+#include <bitboard/turn.hpp>
+#include <catch2/catch_test_macros.hpp>
 
-// TEST_CASE("Turn from string")
-// {
-//   REQUIRE(Turn("a1a8").toString() == "a1a8");
-//   REQUIRE(Turn("a2h8").toString() == "a2h8");
-//   REQUIRE(Turn("a3a5").toString() == "a3a5");
-//   REQUIRE(Turn("a6a8q").toString() == "a6a8q");
-//   REQUIRE(!Turn("a1a9").isValid());
-//   REQUIRE(!Turn("a1a9h").isValid());
-//   REQUIRE(!Turn("a1a8h").isValid());
-//   REQUIRE(!Turn("v1a2").isValid());
-//   REQUIRE(!Turn("a1a9m").isValid());
-//   REQUIRE(!Turn("a1a2m").isValid());
-// }
+#include "bitboard/figure.hpp"
+#include "bitboard/position.hpp"
 
-// TEST_CASE("Turn default constructor")
-// {
-//   Turn turn;
+using bitboard::Figure;
+using bitboard::Position;
+using bitboard::Turn;
 
-//   REQUIRE(turn.isValid() == false);
-// }
+TEST_CASE("Turn default constructor creates invalid turn", "[Turn]")
+{
+  Turn turn;
+  REQUIRE_FALSE(turn.valid());
+  REQUIRE(turn.from().index() == 0);
+  REQUIRE(turn.to().index() == 0);
+  REQUIRE(turn.figure() == Figure::kEmpty);
+  REQUIRE_FALSE(turn.promotion());
+  REQUIRE_FALSE(turn.trivial());
+}
 
-// TEST_CASE("Turn parameterized constructors")
-// {
-//   Position from(0, 0);
-//   Position to(0, 1);
-//   Figure figure = Figure::Pawn;
+TEST_CASE("Turn(Position, Position) - valid positions", "[Turn]")
+{
+  Position from(12);
+  Position to(28);
+  Turn turn(from, to);
+  REQUIRE(turn.valid());
+  REQUIRE(turn.from() == from);
+  REQUIRE(turn.to() == to);
+  REQUIRE(turn.figure() == Figure::kEmpty);
+  REQUIRE_FALSE(turn.promotion());
+}
 
-//   SECTION("Constructor with 'from' and 'to' positions")
-//   {
-//     Turn turn(from, to);
+TEST_CASE("Turn(Position, Position) - invalid positions", "[Turn]")
+{
+  Position invalid_from(128);  // out of bounds
+  Position to(10);
+  Turn turn(invalid_from, to);
+  REQUIRE_FALSE(turn.valid());
+}
 
-//     REQUIRE(turn.from() == from);
-//     REQUIRE(turn.to() == to);
-//     REQUIRE(turn.isValid() == true);
-//   }
+TEST_CASE("Turn(Position, Position, Figure) - valid promotion", "[Turn]")
+{
+  Position from(8);  // e7
+  Position to(0);  // e8
+  Turn turn(from, to, Figure::kQueen);
+  REQUIRE(turn.valid());
+  REQUIRE(turn.promotion());
+  REQUIRE(turn.figure() == Figure::kQueen);
+}
 
-//   SECTION("Constructor with 'from', 'to' and 'figure'")
-//   {
-//     Turn turn(from, to, figure);
+TEST_CASE("Turn(Position, Position, Figure) - invalid promotion figure",
+          "[Turn]")
+{
+  Position from(8);
+  Position to(0);
+  Turn turn(from, to, Figure::kPawn);  // pawn cannot be a promotion target
+  REQUIRE_FALSE(turn.valid());
+}
 
-//     REQUIRE(turn.from() == from);
-//     REQUIRE(turn.to() == to);
-//     REQUIRE(turn.isValid() == true);
-//     REQUIRE(turn.isTrasformation()
-//             == true);  // Assuming no transformation occurs here
-//   }
-// }
+TEST_CASE("Turn::unsafeConstruct without promotion", "[Turn]")
+{
+  Position from(3);
+  Position to(27);
+  Turn turn = Turn::unsafeConstruct(from, to, true);
+  REQUIRE(turn.valid());
+  REQUIRE(turn.from() == from);
+  REQUIRE(turn.to() == to);
+  REQUIRE_FALSE(turn.promotion());
+  REQUIRE(turn.trivial());
+}
 
-// TEST_CASE("Turn string constructor")
-// {
-//   SECTION("Valid chess notation string")
-//   {
-//     Turn turn("e2e4");
+TEST_CASE("Turn::unsafeConstruct with promotion", "[Turn]")
+{
+  Position from(6);
+  Position to(14);
+  Turn turn = Turn::unsafeConstruct(from, to, Figure::kKnight, false);
+  REQUIRE(turn.valid());
+  REQUIRE(turn.promotion());
+  REQUIRE(turn.figure() == Figure::kKnight);
+  REQUIRE_FALSE(turn.trivial());
+}
 
-//     REQUIRE(turn.from() == Position("e2"));  // 'e2' -> (4, 1)
-//     REQUIRE(turn.to() == Position("e4"));  // 'e4' -> (4, 3)
-//     REQUIRE(turn.isValid() == true);
-//   }
+TEST_CASE("Turn operator== and operator!=", "[Turn]")
+{
+  Position from(10);
+  Position to(20);
+  Turn a(from, to);
+  Turn b(from, to);
+  Turn c(Position(11), Position(21));
+  REQUIRE(a == b);
+  REQUIRE(a != c);
+}
 
-//   SECTION("Invalid chess notation string")
-//   {
-//     Turn turn("invalid");
-
-//     REQUIRE(turn.isValid() == false);
-//   }
-// }
-
-// TEST_CASE("Turn comparison operators")
-// {
-//   Turn turn1(Position(0, 0), Position(0, 1));
-//   Turn turn2(Position(0, 0), Position(0, 1));
-//   Turn turn3(Position(0, 1), Position(0, 2));
-
-//   SECTION("Equality operator")
-//   {
-//     REQUIRE(turn1 == turn2);
-//     REQUIRE(turn1 != turn3);
-//   }
-// }
-
-// TEST_CASE("Turn copy and assignment")
-// {
-//   Turn original(Position(0, 0), Position(0, 1), Figure::Pawn);
-
-//   SECTION("Copy constructor")
-//   {
-//     Turn copy(original);
-
-//     REQUIRE(copy == original);
-//   }
-
-//   SECTION("Assignment operator")
-//   {
-//     Turn assigned;
-//     assigned = original;
-
-//     REQUIRE(assigned == original);
-//   }
-// }
+TEST_CASE("Turn toString", "[Turn]")
+{
+  REQUIRE(Turn("a4b3").toString() == "a4b3");
+  REQUIRE(Turn("a4b3q").toString() == "a4b3q");
+}

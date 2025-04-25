@@ -1,161 +1,219 @@
-#include <tuple>
-
 #include <bitboard/position.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
+using bitboard::kPositionInvalid;
 using bitboard::Position;
-using std::make_tuple;
 
-TEST_CASE("Test Position(int,int)")
+TEST_CASE("Test Position() - default constructor")
 {
-  auto&& [x, y, expected] =
-      GENERATE(table<uint8_t, uint8_t, bool>({make_tuple(0, 0, true),
-                                              make_tuple(1, 4, true),
-                                              make_tuple(5, 2, true),
-                                              make_tuple(1, 7, true),
-                                              make_tuple(7, 2, true),
-                                              make_tuple(4, 4, true),
-                                              make_tuple(7, 7, true)}));
-
-  REQUIRE((Position(x, y).valid()) == expected);
+  REQUIRE(Position().valid() == false);
+  REQUIRE(Position().index() == kPositionInvalid);
 }
 
-//   REQUIRE(Position(7, 7).valid() == true);
-//   REQUIRE(Position(0).valid() == true);
-//   REQUIRE(Position(63).valid() == true);
-//   REQUIRE(Position(64).valid() == false);
+TEST_CASE("Test Position(int) - valid index")
+{
+  REQUIRE(Position(0).valid() == true);
+  REQUIRE(Position(0).index() == 0);
+  REQUIRE(Position(63).valid() == true);
+  REQUIRE(Position(63).index() == 63);
 
-//   REQUIRE(!Position("m8").isValid());
-//   REQUIRE(!Position("a9").isValid());
-//   REQUIRE(!Position("h0").isValid());
-//   REQUIRE(!Position("z1").isValid());
+  REQUIRE(Position(0).x() == 0);
+  REQUIRE(Position(0).y() == 0);
+  REQUIRE(Position(63).x() == 7);
+  REQUIRE(Position(63).y() == 7);
+}
 
-//   REQUIRE(Position(0).toString() == "a8");
-//   REQUIRE(Position(56).toString() == "a1");
-//   REQUIRE(Position(7).toString() == "h8");
-//   REQUIRE(Position(63).toString() == "h1");
-//   REQUIRE("a8" == Position("a8").toString());
-//   REQUIRE("a1" == Position("a1").toString());
-//   REQUIRE("h8" == Position("h8").toString());
-//   REQUIRE("h1" == Position("h1").toString());
-// }
+TEST_CASE("Test Position(int) - invalid index")
+{
+  REQUIRE(Position(64).valid() == false);
+  REQUIRE(Position(64).index() >= kPositionInvalid);
+  REQUIRE(Position(100).valid() == false);
+  REQUIRE(Position(100).index() >= kPositionInvalid);
+}
 
-// TEST_CASE("Position default constructor")
-// {
-//   Position pos;
+TEST_CASE("Test Position(int, int) - valid coordinates")
+{
+  REQUIRE(Position(0, 0).valid() == true);
+  REQUIRE(Position(0, 0).index() == 0);
+  REQUIRE(Position(7, 7).valid() == true);
+  REQUIRE(Position(7, 7).index() == 63);
+  REQUIRE(Position(3, 4).valid() == true);
+  REQUIRE(Position(3, 4).index() == 35);
 
-//   REQUIRE(pos.isValid() == false);
-//   REQUIRE(pos.toString() == "--");
-// }
+  REQUIRE(Position(0, 0).x() == 0);
+  REQUIRE(Position(0, 0).y() == 0);
+  REQUIRE(Position(7, 7).x() == 7);
+  REQUIRE(Position(7, 7).y() == 7);
+  REQUIRE(Position(3, 4).x() == 3);
+  REQUIRE(Position(3, 4).y() == 4);
+}
 
-// TEST_CASE("Position parameterized constructors")
-// {
-//   SECTION("Valid x and y coordinates")
-//   {
-//     Position pos(3, 4);
+TEST_CASE("Test Position(int, int) - invalid coordinates")
+{
+  REQUIRE(Position(8, 0).valid() == false);
+  REQUIRE(Position(0, 8).valid() == false);
+  REQUIRE(Position(8, 8).valid() == false);
+  REQUIRE(Position(static_cast<uint8_t>(-1), 0).valid() == false);
+  REQUIRE(Position(0, static_cast<uint8_t>(-1)).valid() == false);
+}
 
-//     REQUIRE(pos.isValid() == true);
-//     REQUIRE(pos.x() == 3);
-//     REQUIRE(pos.y() == 4);
-//     REQUIRE(pos.index() == 35);  // 4 * 8 + 3
-//   }
+TEST_CASE("Test Position(std::string_view) - valid string")
+{
+  REQUIRE(Position("a8").valid() == true);
+  REQUIRE(Position("a8").index() == 0);
+  REQUIRE(Position("h1").valid() == true);
+  REQUIRE(Position("h1").index() == 63);
+  REQUIRE(Position("c5").valid() == true);
+  REQUIRE(Position("c5").index() == 26);
 
-//   SECTION("Valid index")
-//   {
-//     Position pos(27);  // Index corresponds to (3, 3)
+  REQUIRE(Position("a8").x() == 0);
+  REQUIRE(Position("a8").y() == 0);
+  REQUIRE(Position("h1").x() == 7);
+  REQUIRE(Position("h1").y() == 7);
+  REQUIRE(Position("c5").x() == 2);
+  REQUIRE(Position("c5").y() == 3);
+}
 
-//     REQUIRE(pos.isValid() == true);
-//     REQUIRE(pos.x() == 3);
-//     REQUIRE(pos.y() == 3);
-//   }
+TEST_CASE("Test Position(std::string_view) - invalid string")
+{
+  REQUIRE(Position("").valid() == false);
+  REQUIRE(Position("a").valid() == false);
+  REQUIRE(Position("1").valid() == false);
+  REQUIRE(Position("aa").valid() == false);
+  REQUIRE(Position("11").valid() == false);
+  REQUIRE(Position("i1").valid() == false);
+  REQUIRE(Position("a9").valid() == false);
+  REQUIRE(Position("a0").valid() == false);
+  REQUIRE(Position("h9").valid() == false);
+  REQUIRE(Position("01").valid() == false);
+}
 
-//   SECTION("Invalid index")
-//   {
-//     Position pos(64);  // Invalid index
+TEST_CASE("Test valid()")
+{
+  REQUIRE(Position().valid() == false);
+  REQUIRE(Position(0).valid() == true);
+  REQUIRE(Position(63).valid() == true);
+  REQUIRE(Position(64).valid() == false);
+  REQUIRE(Position(3, 4).valid() == true);
+  REQUIRE(Position(8, 0).valid() == false);
+  REQUIRE(Position("a1").valid() == true);
+  REQUIRE(Position("i9").valid() == false);
+}
 
-//     REQUIRE(pos.isValid() == false);
-//     REQUIRE(pos.toString() == "--");
-//   }
+TEST_CASE("Test index()")
+{
+  REQUIRE(Position().index() == kPositionInvalid);
+  REQUIRE(Position(0).index() == 0);
+  REQUIRE(Position(63).index() == 63);
+  REQUIRE(Position(64).index() == kPositionInvalid);
+  REQUIRE(Position(3, 4).index() == 35);
+  REQUIRE(Position(8, 0).index() == kPositionInvalid);
+  REQUIRE(Position("a8").index() == 0);
+  REQUIRE(Position("h1").index() == 63);
+  REQUIRE(Position("i9").index() == kPositionInvalid);
+}
 
-//   SECTION("String representation constructor (valid)")
-//   {
-//     Position pos("e2");
+TEST_CASE("Test x() - valid")
+{
+  REQUIRE(Position(0).x() == 0);
+  REQUIRE(Position(7).x() == 7);
+  REQUIRE(Position(35).x() == 3);
+  REQUIRE(Position("a1").x() == 0);
+  REQUIRE(Position("h8").x() == 7);
+  REQUIRE(Position("d3").x() == 3);
+}
 
-//     REQUIRE(pos.isValid() == true);
-//     REQUIRE(pos.x() == 4);  // 'e' -> 4
-//     REQUIRE(pos.y() == 6);  // '2' -> 8 - 2 = 6
-//     REQUIRE(pos.toString() == "e2");
-//   }
+TEST_CASE("Test y() - valid")
+{
+  REQUIRE(Position(0).y() == 0);
+  REQUIRE(Position(7).y() == 0);
+  REQUIRE(Position(56).y() == 7);
+  REQUIRE(Position(35).y() == 4);
+  REQUIRE(Position("a1").y() == 7);
+  REQUIRE(Position("h8").y() == 0);
+  REQUIRE(Position("d3").y() == 5);
+}
 
-//   SECTION("String representation constructor (invalid)")
-//   {
-//     Position pos("z9");
+TEST_CASE("Test rotate()")
+{
+  REQUIRE(Position().rotate().valid() == false);
+  REQUIRE(Position(0).rotate().index() == 63);  // a1 -> h8
+  REQUIRE(Position(63).rotate().index() == 0);  // h8 -> a1
+  REQUIRE(Position(35).rotate().index() == 28);  // d5 -> e4
+  REQUIRE(Position("a1").rotate().toString() == "h8");
+  REQUIRE(Position("h8").rotate().toString() == "a1");
+  REQUIRE(Position("d5").rotate().toString() == "e4");
+  REQUIRE(Position("c3").rotate().toString() == "f6");
+}
 
-//     REQUIRE(pos.isValid() == false);
-//     REQUIRE(pos.toString() == "--");
-//   }
-// }
+TEST_CASE("Test toString()")
+{
+  REQUIRE(Position().toString() == "-");
+  REQUIRE(Position(0).toString() == "a8");
+  REQUIRE(Position(7).toString() == "h8");
+  REQUIRE(Position(56).toString() == "a1");
+  REQUIRE(Position(63).toString() == "h1");
+  REQUIRE(Position(35).toString() == "d4");
+  REQUIRE(Position(3, 4).toString() == "d4");
+  REQUIRE(Position("a1").toString() == "a1");
+  REQUIRE(Position("h8").toString() == "h8");
+}
 
-// TEST_CASE("Position rotation")
-// {
-//   SECTION("Valid position rotation")
-//   {
-//     Position pos(0, 0);
-//     Position rotated = pos.rotate();
+TEST_CASE("Test operator==()")
+{
+  REQUIRE(Position() == Position());
+  REQUIRE(Position(0) == Position(0));
+  REQUIRE(Position(63) == Position(63));
+  REQUIRE(Position(3, 4) == Position(3, 4));
+  REQUIRE(Position("a1") == Position("a1"));
+  REQUIRE(Position("h8") == Position("h8"));
 
-//     REQUIRE(rotated.isValid() == true);
-//     REQUIRE(rotated.x() == 7);
-//     REQUIRE(rotated.y() == 7);
-//     REQUIRE(rotated.index() == 63);
-//   }
-// }
+  REQUIRE_FALSE(Position() == Position(0));
+  REQUIRE_FALSE(Position(0) == Position(1));
+  REQUIRE_FALSE(Position(3, 4) == Position(4, 3));
+  REQUIRE_FALSE(Position("a1") == Position("b1"));
+  REQUIRE_FALSE(Position("h8") == Position("g7"));
+}
 
-// TEST_CASE("Position toString")
-// {
-//   SECTION("Valid position")
-//   {
-//     Position pos(4, 3);
+TEST_CASE("Test operator!=()")
+{
+  REQUIRE_FALSE(Position() != Position());
+  REQUIRE_FALSE(Position(0) != Position(0));
+  REQUIRE_FALSE(Position(63) != Position(63));
+  REQUIRE_FALSE(Position(3, 4) != Position(3, 4));
+  REQUIRE_FALSE(Position("a1") != Position("a1"));
+  REQUIRE_FALSE(Position("h8") != Position("h8"));
 
-//     REQUIRE(pos.toString() == "e5");
-//   }
+  REQUIRE(Position() != Position(0));
+  REQUIRE(Position(0) != Position(1));
+  REQUIRE(Position(3, 4) != Position(4, 3));
+  REQUIRE(Position("a1") != Position("b1"));
+  REQUIRE(Position("h8") != Position("g7"));
+}
 
-//   SECTION("Invalid position")
-//   {
-//     Position invalid;
+TEST_CASE("Test operator<()")
+{
+  REQUIRE(Position(0) < Position(1));
+  REQUIRE(Position(3) < Position(35));
+  REQUIRE(Position("a2") < Position("a1"));
+  REQUIRE(Position("a1") < Position("b1"));
+  REQUIRE(Position("h8") < Position("h7"));
 
-//     REQUIRE(invalid.toString() == "--");
-//   }
-// }
+  REQUIRE_FALSE(Position(0) < Position(0));
+  REQUIRE_FALSE(Position(1) < Position(0));
+  REQUIRE_FALSE(Position(35) < Position(3));
+  REQUIRE_FALSE(Position("a1") < Position("a2"));
+  REQUIRE_FALSE(Position("b1") < Position("a1"));
+  REQUIRE_FALSE(Position("h7") < Position("h8"));
+  REQUIRE_FALSE(Position() < Position(0));
+}
 
-// TEST_CASE("Position comparison operators")
-// {
-//   Position pos1(3, 4);
-//   Position pos2(3, 4);
-//   Position pos3(2, 4);
-
-//   SECTION("Equality operator")
-//   {
-//     REQUIRE(pos1 == pos2);
-//     REQUIRE(pos1 != pos3);
-//   }
-
-//   SECTION("Less-than operator")
-//   {
-//     REQUIRE(pos3 < pos1);
-//     REQUIRE(!(pos1 < pos2));
-//   }
-// }
-
-// TEST_CASE("Edge cases")
-// {
-//   SECTION("Position on the edge of the board")
-//   {
-//     Position pos(7, 7);
-
-//     REQUIRE(pos.isValid() == true);
-//     REQUIRE(pos.x() == 7);
-//     REQUIRE(pos.y() == 7);
-//     REQUIRE(pos.index() == 63);
-//   }
-// }
+TEST_CASE("Test unsafeConstruct(int8_t, int8_t)")
+{
+  REQUIRE(Position::unsafeConstruct(0, 0).index() == 0);
+  REQUIRE(Position::unsafeConstruct(7, 7).index() == 63);
+  REQUIRE(Position::unsafeConstruct(3, 4).index() == 35);
+  REQUIRE(Position::unsafeConstruct(0, 0).valid() == true);
+  REQUIRE(Position::unsafeConstruct(7, 7).valid() == true);
+}

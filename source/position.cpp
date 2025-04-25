@@ -1,0 +1,1 @@
+#include <bitboard/position.hpp>
