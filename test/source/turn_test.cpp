@@ -91,3 +91,9 @@ TEST_CASE("Turn operator== and operator!=", "[Turn]")
   REQUIRE(a == b);
   REQUIRE(a != c);
 }
+
+TEST_CASE("Turn toString", "[Turn]")
+{
+  REQUIRE(Turn("a4b3").toString() == "a4b3");
+  REQUIRE(Turn("a4b3q").toString() == "a4b3q");
+}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <bitboard/bitboard_export.hpp>
 #include <bitboard/figure.hpp>
 #include <bitboard/position.hpp>
@@ -173,13 +175,72 @@ constexpr Turn::Turn(Position from, Position to, Figure figure) noexcept
 }
 
 inline Turn::Turn(std::string_view chess_format)
-{  // NOLINT
+{
+  if (chess_format.length() < 4 && chess_format.length() > 5) {
+    return;
+  }
+
+  auto from_pos = Position(chess_format.substr(0, 2));
+  auto to_pos = Position(chess_format.substr(2, 2));
+
+  auto figure = Figure::kEmpty;
+  if (chess_format.length() == 5) {
+    switch (chess_format[4]) {
+      case 'k':
+        figure = Figure::kKnight;
+        break;
+      case 'b':
+        figure = Figure::kBishop;
+        break;
+      case 'r':
+        figure = Figure::kRook;
+        break;
+      case 'q':
+        figure = Figure::kQueen;
+        break;
+      default:
+        from_pos = Position();
+        to_pos = Position();
+    }
+  }
+  if (from_pos.valid() && to_pos.valid()) {
+    m_from = from_pos.index();
+    m_to = to_pos.index();
+    m_figure = static_cast<uint16_t>(figure);
+  }
 }
 
 inline std::string Turn::toString() const
 {
-  return "";
-}  // NOLINT
+  std::string result;
+  result.reserve(5);
+
+  auto from_str = Position(m_from).toString();
+  auto to_str = Position(m_to).toString();
+
+  result += from_str + to_str;
+
+  if (auto figure = static_cast<Figure>(m_figure); figure != Figure::kEmpty) {
+    switch (figure) {
+      case Figure::kKnight:
+        result.push_back('k');
+        break;
+      case Figure::kBishop:
+        result.push_back('b');
+        break;
+      case Figure::kRook:
+        result.push_back('r');
+        break;
+      case Figure::kQueen:
+        result.push_back('q');
+        break;
+      default:
+        break;
+    }
+  }
+
+  return result;
+}
 
 constexpr Position Turn::from() const noexcept
 {
