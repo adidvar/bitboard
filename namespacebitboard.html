@@ -77,11 +77,11 @@
             <dt>
               class <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>
             </dt>
-            <dd>The <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> class describes a chess position.</dd>
+            <dd>The <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> class describes a chess position on the board.</dd>
             <dt>
               class <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a>
             </dt>
-            <dd><span></span></dd>
+            <dd>Represents a chess turn (move).</dd>
           </dl>
         </section>
         <section id="enum-members">
@@ -91,7 +91,7 @@
               <span class="m-doc-wrap-bumper">enum class <a href="#a4d8c5fa36e89b9510972f506df040aea" class="m-doc">Color</a>: int8_t { </span><span class="m-doc-wrap"><a href="#a4d8c5fa36e89b9510972f506df040aeaad368dbde55a733c6dde5a20566d50736" class="m-doc">kWhite</a> = -1,
               <a href="#a4d8c5fa36e89b9510972f506df040aeaac5157738e8808c557e6cac46c034a2db" class="m-doc">kBlack</a> = 1 }</span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Enumerates the two colors in chess.</dd>
             <dt>
               <span class="m-doc-wrap-bumper">enum class <a href="#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a>: int8_t { </span><span class="m-doc-wrap"><a href="#ab9e145de7c4af3a2d96f78e6dadcc75da65d0c57fb98927f91459ad92c864def8" class="m-doc">kEmpty</a> = 0,
               <a href="#ab9e145de7c4af3a2d96f78e6dadcc75da5187644c2338a06f6ac916ab31c64ea9" class="m-doc">kPawn</a> = 1,
@@ -113,7 +113,7 @@
               <a href="#ab9e145de7c4af3a2d96f78e6dadcc75da3e6a93fd54c5c7822fe24d7eb65489da" class="m-doc">kBQueen</a> = -5,
               <a href="#ab9e145de7c4af3a2d96f78e6dadcc75dac4d28503d9c184277c2b40be40325af8" class="m-doc">kBKing</a> = -6 }</span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Enumerates chess figures with color encoding.</dd>
           </dl>
         </section>
         <section id="typedef-members">
@@ -138,8 +138,8 @@
             </dt>
             <dd><span></span></dd>
             <dt>
-              <span class="m-doc-wrap-bumper">auto <a href="#ab96545d400bb8b3d1238a55c10fbd1b1" class="m-doc">operator&quot;&quot;_pv</a>(</span><span class="m-doc-wrap">const char* str,
-              const std::size_t len) -&gt; uint8_t <span class="m-label m-flat m-primary">constexpr</span></span>
+              <span class="m-doc-wrap-bumper">auto <a href="#aa071dad26584a18eea82a6a92099ea62" class="m-doc">operator&quot;&quot;_pv</a>(</span><span class="m-doc-wrap">const char* str,
+              const std::size_t len) -&gt; <a href="classbitboard_1_1Position.html#a354704ee76dc78b22bb1472642875232" class="m-doc">Position::<wbr />int_t</a> <span class="m-label m-flat m-primary">constexpr</span></span>
             </dt>
             <dd><span></span></dd>
           </dl>
@@ -162,15 +162,15 @@
             <dt>
               uint8_t <a href="#aa50762a1f1236727c05a077bb4ec737a" class="m-doc">kBoardSize</a> <span class="m-label m-flat m-primary">constexpr</span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Constant representing the size of the chessboard (8x8).</dd>
             <dt>
               uint8_t <a href="#a4658a91c4a2423478d7fac0459be0207" class="m-doc">kPositionSize</a> <span class="m-label m-flat m-primary">constexpr</span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Constant representing the maximum valid position index on the board (0 to 63).</dd>
             <dt>
               uint8_t <a href="#a32b89fbff162a6984a350c8be9db681a" class="m-doc">kPositionInvalid</a> <span class="m-label m-flat m-primary">constexpr</span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Constant representing an invalid position index.</dd>
           </dl>
         </section>
         <section>
@@ -180,14 +180,15 @@
               enum class bitboard::<wbr /><a href="#a4d8c5fa36e89b9510972f506df040aea" class="m-doc-self">Color</a>: int8_t
               <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="color_8hpp.html">&lt;bitboard/color.hpp&gt;</a></div>
             </h3>
-            <p><span></span></p>
+            <p>Enumerates the two colors in chess.</p>
           </div></section>
           <section class="m-doc-details" id="ab9e145de7c4af3a2d96f78e6dadcc75d"><div>
             <h3>
               enum class bitboard::<wbr /><a href="#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc-self">Figure</a>: int8_t
               <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="figure_8hpp.html">&lt;bitboard/figure.hpp&gt;</a></div>
             </h3>
-            <p><span></span></p>
+            <p>Enumerates chess figures with color encoding.</p>
+<p>This enum represents different chess pieces, including their color. Positive values represent white pieces, negative values represent black pieces, and zero represents an empty square. The numerical value (absolute value) also corresponds to a simple ordering of piece types, useful in some evaluation functions.</p>
           </div></section>
         </section>
         <section>
@@ -213,15 +214,15 @@
             <h3>
               <span class="m-doc-wrap-bumper"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> bitboard::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac31588516e0b56feb6b331f20a393d1f" class="m-doc-self">operator&quot;&quot;_p</a>(</span><span class="m-doc-wrap">const char* str,
               const std::size_t len) <span class="m-label m-primary">constexpr</span></span></span>
-              <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="impl_2position_8hpp.html">&lt;bitboard/impl/position.hpp&gt;</a></div>
+              <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="position_8hpp.html">&lt;bitboard/position.hpp&gt;</a></div>
             </h3>
             <p><span></span></p>
           </div></section>
-          <section class="m-doc-details" id="ab96545d400bb8b3d1238a55c10fbd1b1"><div>
+          <section class="m-doc-details" id="aa071dad26584a18eea82a6a92099ea62"><div>
             <h3>
-              <span class="m-doc-wrap-bumper">uint8_t bitboard::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ab96545d400bb8b3d1238a55c10fbd1b1" class="m-doc-self">operator&quot;&quot;_pv</a>(</span><span class="m-doc-wrap">const char* str,
+              <span class="m-doc-wrap-bumper"><a href="classbitboard_1_1Position.html#a354704ee76dc78b22bb1472642875232" class="m-doc">Position::<wbr />int_t</a> bitboard::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aa071dad26584a18eea82a6a92099ea62" class="m-doc-self">operator&quot;&quot;_pv</a>(</span><span class="m-doc-wrap">const char* str,
               const std::size_t len) <span class="m-label m-primary">constexpr</span></span></span>
-              <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="impl_2position_8hpp.html">&lt;bitboard/impl/position.hpp&gt;</a></div>
+              <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="position_8hpp.html">&lt;bitboard/position.hpp&gt;</a></div>
             </h3>
             <p><span></span></p>
           </div></section>
@@ -254,21 +255,21 @@
               uint8_t bitboard::<wbr /><a href="#aa50762a1f1236727c05a077bb4ec737a" class="m-doc-self">kBoardSize</a> <span class="m-label m-primary">constexpr</span>
               <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="position_8hpp.html">&lt;bitboard/position.hpp&gt;</a></div>
             </h3>
-            <p><span></span></p>
+            <p>Constant representing the size of the chessboard (8x8).</p>
           </div></section>
           <section class="m-doc-details" id="a4658a91c4a2423478d7fac0459be0207"><div>
             <h3>
               uint8_t bitboard::<wbr /><a href="#a4658a91c4a2423478d7fac0459be0207" class="m-doc-self">kPositionSize</a> <span class="m-label m-primary">constexpr</span>
               <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="position_8hpp.html">&lt;bitboard/position.hpp&gt;</a></div>
             </h3>
-            <p><span></span></p>
+            <p>Constant representing the maximum valid position index on the board (0 to 63).</p>
           </div></section>
           <section class="m-doc-details" id="a32b89fbff162a6984a350c8be9db681a"><div>
             <h3>
               uint8_t bitboard::<wbr /><a href="#a32b89fbff162a6984a350c8be9db681a" class="m-doc-self">kPositionInvalid</a> <span class="m-label m-primary">constexpr</span>
               <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="position_8hpp.html">&lt;bitboard/position.hpp&gt;</a></div>
             </h3>
-            <p><span></span></p>
+            <p>Constant representing an invalid position index.</p>
           </div></section>
         </section>
       </div>

@@ -52,97 +52,350 @@
           <span class="m-breadcrumb"><a href="namespacebitboard.html">bitboard</a>::<wbr/></span>Turn <span class="m-thin">class</span>
           <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="turn_8hpp.html">&lt;bitboard/turn.hpp&gt;</a></div>
         </h1>
-        <p><span></span></p>
+        <p>Represents a chess turn (move).</p>
         <nav class="m-block m-default">
           <h3>Contents</h3>
           <ul>
             <li>
               Reference
               <ul>
+                <li><a href="#pub-static-methods">Public static functions</a></li>
                 <li><a href="#typeless-methods">Constructors, destructors, conversion operators</a></li>
                 <li><a href="#pub-methods">Public functions</a></li>
               </ul>
             </li>
           </ul>
         </nav>
+<p>Encapsulates move information: start/end positions, promotion figure (if pawn promotion), and flags for validity, promotion (is a pawn promotion), and triviality (simple move). Optimized for size (2 bytes).</p>
+        <section id="pub-static-methods">
+          <h2><a href="#pub-static-methods">Public static functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#ad1536628025c0238e571a338e51151b9" class="m-doc">unsafeConstruct</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to,
+              bool trivial) -&gt; <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Unsafely constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> without validation. Use with caution.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#aa790757700950fff03bd959a5ff51245" class="m-doc">unsafeConstruct</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to,
+              <a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> figure,
+              bool trivial) -&gt; <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Unsafely constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> with a promotion figure without validation. Use with caution.</dd>
+          </dl>
+        </section>
         <section id="typeless-methods">
           <h2><a href="#typeless-methods">Constructors, destructors, conversion operators</a></h2>
           <dl class="m-doc">
-            <dt id="a082822c3b65a013116472375c14fe575">
-              <span class="m-doc-wrap-bumper"><a href="#a082822c3b65a013116472375c14fe575" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-primary">constexpr</span></span>
+            <dt id="a161ad180173955e9229d8ea1df83f316">
+              <span class="m-doc-wrap-bumper"><a href="#a161ad180173955e9229d8ea1df83f316" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Default constructor, creates an invalid <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a>.</dd>
             <dt id="a45deb966e12ba80e466460888cbedafd">
               <span class="m-doc-wrap-bumper"><a href="#a45deb966e12ba80e466460888cbedafd" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a>&amp; other) <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-primary">constexpr</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="ae98999f612e18760a87bb8f4a19a3cf9">
-              <span class="m-doc-wrap-bumper"><a href="#ae98999f612e18760a87bb8f4a19a3cf9" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+            <dd>Copy constructor.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a63837c0d392ec560d3c6c491e669e63f" class="m-doc">Turn</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to) <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> with start and end positions; invalidates on invalid positions.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#af05b73cdfe0ccb392b05efa66b008133" class="m-doc">Turn</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
               <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to,
-              bool trivial = false) <span class="m-label m-flat m-primary">constexpr</span></span>
+              <a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> figure) <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="aa923bfdbb73f558d2e48c143684a30c9">
-              <span class="m-doc-wrap-bumper"><a href="#aa923bfdbb73f558d2e48c143684a30c9" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
-              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to,
-              <a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> figure,
-              bool trivial = false) <span class="m-label m-flat m-primary">constexpr</span></span>
+            <dd>Constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> with start/end positions and the promotion figure; invalidates on invalid input.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a3428c51d163f33f6d2f171900b02bd9a" class="m-doc">Turn</a>(</span><span class="m-doc-wrap">std::string_view chess_format) <span class="m-label m-flat m-info">explicit</span> </span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a3428c51d163f33f6d2f171900b02bd9a">
-              <span class="m-doc-wrap-bumper"><a href="#a3428c51d163f33f6d2f171900b02bd9a" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap">std::string_view chess_format) <span class="m-label m-flat m-info">explicit</span> </span>
-            </dt>
-            <dd><span></span></dd>
+            <dd>Constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> from chess notation; invalidates on parsing errors or invalid positions.</dd>
           </dl>
         </section>
         <section id="pub-methods">
           <h2><a href="#pub-methods">Public functions</a></h2>
           <dl class="m-doc">
-            <dt id="ac6d97ce0ba76cc8f4fe9a3139c193c25">
-              <span class="m-doc-wrap-bumper">auto <a href="#ac6d97ce0ba76cc8f4fe9a3139c193c25" class="m-doc-self">toString</a>(</span><span class="m-doc-wrap">) const -&gt; std::string</span>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac6d97ce0ba76cc8f4fe9a3139c193c25" class="m-doc">toString</a>(</span><span class="m-doc-wrap">) const -&gt; std::string</span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Converts the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> to a string (e.g., algebraic notation).</dd>
             <dt id="a7e2bf13776f09817596d6184afecba90">
               <span class="m-doc-wrap-bumper">auto <a href="#a7e2bf13776f09817596d6184afecba90" class="m-doc-self">operator==</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a>&amp; other) const -&gt; bool <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-primary">constexpr</span></span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Equality operator.</dd>
             <dt id="a882d0b9b7dd4bc8251f1ec0e867c9974">
               <span class="m-doc-wrap-bumper">auto <a href="#a882d0b9b7dd4bc8251f1ec0e867c9974" class="m-doc-self">operator!=</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a>&amp; other) const -&gt; bool <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-primary">constexpr</span></span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Inequality operator.</dd>
             <dt id="afc253d44a032163518460e3a98e67f73">
               <span class="m-doc-wrap-bumper">auto <a href="#afc253d44a032163518460e3a98e67f73" class="m-doc-self">operator=</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a>&amp; other) -&gt; <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a>&amp; <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-primary">constexpr</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="ab66f406614bbd55f133ace88d1180e73">
-              <span class="m-doc-wrap-bumper">auto <a href="#ab66f406614bbd55f133ace88d1180e73" class="m-doc-self">from</a>(</span><span class="m-doc-wrap">) const -&gt; <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Assignment operator.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ab66f406614bbd55f133ace88d1180e73" class="m-doc">from</a>(</span><span class="m-doc-wrap">) const -&gt; <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a390752cc38f6d263690aa92a1a65779d">
-              <span class="m-doc-wrap-bumper">auto <a href="#a390752cc38f6d263690aa92a1a65779d" class="m-doc-self">to</a>(</span><span class="m-doc-wrap">) const -&gt; <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Gets the starting position.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a390752cc38f6d263690aa92a1a65779d" class="m-doc">to</a>(</span><span class="m-doc-wrap">) const -&gt; <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a0ce96177c9f8f50f60d09d54a4041bb6">
-              <span class="m-doc-wrap-bumper">auto <a href="#a0ce96177c9f8f50f60d09d54a4041bb6" class="m-doc-self">figure</a>(</span><span class="m-doc-wrap">) const -&gt; <a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Gets the ending position.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a0ce96177c9f8f50f60d09d54a4041bb6" class="m-doc">figure</a>(</span><span class="m-doc-wrap">) const -&gt; <a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="ad39d14caff9c3ad6a7aa7317d451e9e0">
-              <span class="m-doc-wrap-bumper">auto <a href="#ad39d14caff9c3ad6a7aa7317d451e9e0" class="m-doc-self">valid</a>(</span><span class="m-doc-wrap">) const -&gt; bool <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Gets the promotion figure.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ad39d14caff9c3ad6a7aa7317d451e9e0" class="m-doc">valid</a>(</span><span class="m-doc-wrap">) const -&gt; bool <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a6bfe310f2787b56c43700b1acb24c64c">
-              <span class="m-doc-wrap-bumper">auto <a href="#a6bfe310f2787b56c43700b1acb24c64c" class="m-doc-self">transform</a>(</span><span class="m-doc-wrap">) const -&gt; bool <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Checks if the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> is valid (constructed without errors).</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a1b55e2db73b9b709cb4e2aecd8e98694" class="m-doc">promotion</a>(</span><span class="m-doc-wrap">) const -&gt; bool <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a052cbfc0ebe3947b3248cef510de2ee6">
-              <span class="m-doc-wrap-bumper">auto <a href="#a052cbfc0ebe3947b3248cef510de2ee6" class="m-doc-self">trivial</a>(</span><span class="m-doc-wrap">) const -&gt; bool <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Checks if the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> involves a pawn promotion.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a052cbfc0ebe3947b3248cef510de2ee6" class="m-doc">trivial</a>(</span><span class="m-doc-wrap">) const -&gt; bool <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a8eeb34812ce4a91707ee81a2e93b76ab">
-              <span class="m-doc-wrap-bumper">void <a href="#a8eeb34812ce4a91707ee81a2e93b76ab" class="m-doc-self">setFigure</a>(</span><span class="m-doc-wrap"><a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> figure) <span class="m-label m-flat m-primary">constexpr</span></span>
-            </dt>
-            <dd><span></span></dd>
+            <dd>Checks if the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> is a simple move (not castling, capture, etc.).</dd>
           </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="ad1536628025c0238e571a338e51151b9"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">static <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad1536628025c0238e571a338e51151b9" class="m-doc-self">unsafeConstruct</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to,
+              bool trivial) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Unsafely constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> without validation. Use with caution.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">from</td>
+                  <td>The starting position.</td>
+                </tr>
+                <tr>
+                  <td>to</td>
+                  <td>The ending position.</td>
+                </tr>
+                <tr>
+                  <td>trivial</td>
+                  <td>Whether the turn is a simple move.</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>A <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> object.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aa790757700950fff03bd959a5ff51245"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">static <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aa790757700950fff03bd959a5ff51245" class="m-doc-self">unsafeConstruct</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to,
+              <a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> figure,
+              bool trivial) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Unsafely constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> with a promotion figure without validation. Use with caution.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">from</td>
+                  <td>The starting position.</td>
+                </tr>
+                <tr>
+                  <td>to</td>
+                  <td>The ending position.</td>
+                </tr>
+                <tr>
+                  <td>figure</td>
+                  <td>The promotion figure.</td>
+                </tr>
+                <tr>
+                  <td>trivial</td>
+                  <td>Whether the turn is a simple move.</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>A <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> object.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a63837c0d392ec560d3c6c491e669e63f"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a63837c0d392ec560d3c6c491e669e63f" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> with start and end positions; invalidates on invalid positions.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">from</td>
+                  <td>The starting position.</td>
+                </tr>
+                <tr>
+                  <td>to</td>
+                  <td>The ending position.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Ensures <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> size is exactly 2 bytes for efficiency.</p>
+          </div></section>
+          <section class="m-doc-details" id="af05b73cdfe0ccb392b05efa66b008133"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#af05b73cdfe0ccb392b05efa66b008133" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> from,
+              <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> to,
+              <a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> figure) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> with start/end positions and the promotion figure; invalidates on invalid input.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">from</td>
+                  <td>The starting position.</td>
+                </tr>
+                <tr>
+                  <td>to</td>
+                  <td>The ending position.</td>
+                </tr>
+                <tr>
+                  <td>figure</td>
+                  <td>The figure to which a pawn promotes (if applicable).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a3428c51d163f33f6d2f171900b02bd9a"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3428c51d163f33f6d2f171900b02bd9a" class="m-doc-self">Turn</a>(</span><span class="m-doc-wrap">std::string_view chess_format) <span class="m-label m-info">explicit</span> </span></span>
+            </h3>
+            <p>Constructs a <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> from chess notation; invalidates on parsing errors or invalid positions.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">chess_format</td>
+                  <td>A string in chess notation.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac6d97ce0ba76cc8f4fe9a3139c193c25"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">std::string bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac6d97ce0ba76cc8f4fe9a3139c193c25" class="m-doc-self">toString</a>(</span><span class="m-doc-wrap">) const</span></span>
+            </h3>
+            <p>Converts the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> to a string (e.g., algebraic notation).</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>String representation of the turn.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ab66f406614bbd55f133ace88d1180e73"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ab66f406614bbd55f133ace88d1180e73" class="m-doc-self">from</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Gets the starting position.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The starting position.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a390752cc38f6d263690aa92a1a65779d"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="classbitboard_1_1Position.html" class="m-doc">Position</a> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a390752cc38f6d263690aa92a1a65779d" class="m-doc-self">to</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Gets the ending position.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The ending position.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a0ce96177c9f8f50f60d09d54a4041bb6"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"><a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75d" class="m-doc">Figure</a> bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a0ce96177c9f8f50f60d09d54a4041bb6" class="m-doc-self">figure</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Gets the promotion figure.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The promotion figure (<a href="namespacebitboard.html#ab9e145de7c4af3a2d96f78e6dadcc75da65d0c57fb98927f91459ad92c864def8" class="m-doc">Figure::<wbr />kEmpty</a> if not a promotion).</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ad39d14caff9c3ad6a7aa7317d451e9e0"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad39d14caff9c3ad6a7aa7317d451e9e0" class="m-doc-self">valid</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Checks if the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> is valid (constructed without errors).</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>True if valid, false otherwise.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a1b55e2db73b9b709cb4e2aecd8e98694"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1b55e2db73b9b709cb4e2aecd8e98694" class="m-doc-self">promotion</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Checks if the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> involves a pawn promotion.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>True if promotion, false otherwise.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a052cbfc0ebe3947b3248cef510de2ee6"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">bool bitboard::<wbr />Turn::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a052cbfc0ebe3947b3248cef510de2ee6" class="m-doc-self">trivial</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Checks if the <a href="classbitboard_1_1Turn.html" class="m-doc">Turn</a> is a simple move (not castling, capture, etc.).</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>True if a simple move, false otherwise.</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
         </section>
       </div>
     </div>

@@ -52,81 +52,334 @@
           <span class="m-breadcrumb"><a href="namespacebitboard.html">bitboard</a>::<wbr/></span>Position <span class="m-thin">class</span>
           <div class="m-doc-include m-code m-inverted m-text-right"><span class="cp">#include</span> <a class="cpf" href="position_8hpp.html">&lt;bitboard/position.hpp&gt;</a></div>
         </h1>
-        <p>The <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> class describes a chess position.</p>
+        <p>The <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> class describes a chess position on the board.</p>
         <nav class="m-block m-default">
           <h3>Contents</h3>
           <ul>
             <li>
               Reference
               <ul>
+                <li><a href="#pub-types">Public types</a></li>
+                <li><a href="#pub-static-methods">Public static functions</a></li>
                 <li><a href="#typeless-methods">Constructors, destructors, conversion operators</a></li>
                 <li><a href="#pub-methods">Public functions</a></li>
               </ul>
             </li>
           </ul>
         </nav>
+<p>Internally, the position is represented by a single <code>uint8_t</code> index, ranging from 0 to 63, where 0 corresponds to the bottom-left square (A1) and 63 corresponds to the top-right square (H8). An invalid position is represented by the index <code>kPositionInvalid</code> (64).</p><p>+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ | 0| 1| 2| 3| 4| 5| 6| 7| 8 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ | 8| 9|10|11|12|13|14|15| 7 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ |16|17|18|19|20|21|22|23| 6 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ |24|25|26|27|28|29|30|31| 5 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ |32|33|34|35|36|37|38|39| 4 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ |40|41|42|43|44|45|46|47| 3 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ |48|49|50|51|52|53|54|55| 2 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+ |56|57|58|59|60|61|62|63| 1 +&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+&ndash;+</p>
+        <section id="pub-types">
+          <h2><a href="#pub-types">Public types</a></h2>
+          <dl class="m-doc">
+            <dt id="a354704ee76dc78b22bb1472642875232">
+              using <a href="#a354704ee76dc78b22bb1472642875232" class="m-doc-self">int_t</a> = uint8_t
+            </dt>
+            <dd><span></span></dd>
+          </dl>
+        </section>
+        <section id="pub-static-methods">
+          <h2><a href="#pub-static-methods">Public static functions</a></h2>
+          <dl class="m-doc">
+            <dt id="ae163f47a46d3edd55f7270b4bc04a32d">
+              <span class="m-doc-wrap-bumper">static auto <a href="#ae163f47a46d3edd55f7270b4bc04a32d" class="m-doc-self">unsafeConstruct</a>(</span><span class="m-doc-wrap"><a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> x,
+              <a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> y) -&gt; <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Unsafely constructs a <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> object from a (x,y) without validity checks.</dd>
+          </dl>
+        </section>
         <section id="typeless-methods">
           <h2><a href="#typeless-methods">Constructors, destructors, conversion operators</a></h2>
           <dl class="m-doc">
-            <dt id="a8c8f25d9e7803c1cf41fbd36f3e05baf">
-              <span class="m-doc-wrap-bumper"><a href="#a8c8f25d9e7803c1cf41fbd36f3e05baf" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a8c8f25d9e7803c1cf41fbd36f3e05baf" class="m-doc">Position</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a253ccef0ac19fe2d83f358c9b6417ee6">
-              <span class="m-doc-wrap-bumper"><a href="#a253ccef0ac19fe2d83f358c9b6417ee6" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap">uint8_t index) <span class="m-label m-flat m-info">explicit</span>  <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Default constructor.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a89a226e4823137e88b6a731633f7dcce" class="m-doc">Position</a>(</span><span class="m-doc-wrap"><a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> index) <span class="m-label m-flat m-info">explicit</span>  <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a5c44713824ea2ab7b190ebdcba97da07">
-              <span class="m-doc-wrap-bumper"><a href="#a5c44713824ea2ab7b190ebdcba97da07" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap">uint8_t x_pos,
-              uint8_t y_pos) <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Explicit constructor from a linear index.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a2fdbd3bdeb9281291e01bfd55bc129de" class="m-doc">Position</a>(</span><span class="m-doc-wrap"><a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> x_pos,
+              <a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> y_pos) <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a1802ff8501912fd341352d0bc8b486ef">
-              <span class="m-doc-wrap-bumper"><a href="#a1802ff8501912fd341352d0bc8b486ef" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap">std::string_view string) <span class="m-label m-flat m-info">explicit</span>  <span class="m-label m-flat m-primary">constexpr</span></span>
+            <dd>Constructor from x and y coordinates.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a1802ff8501912fd341352d0bc8b486ef" class="m-doc">Position</a>(</span><span class="m-doc-wrap">std::string_view string) <span class="m-label m-flat m-info">explicit</span>  <span class="m-label m-flat m-primary">constexpr</span></span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Explicit constructor from a string representation (e.g., &quot;a1&quot;, &quot;H8&quot;).</dd>
           </dl>
         </section>
         <section id="pub-methods">
           <h2><a href="#pub-methods">Public functions</a></h2>
           <dl class="m-doc">
-            <dt id="a67a5736df001c794ddd8f4dfe4c7aea4">
-              <span class="m-doc-wrap-bumper">auto <a href="#a67a5736df001c794ddd8f4dfe4c7aea4" class="m-doc-self">valid</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a67a5736df001c794ddd8f4dfe4c7aea4" class="m-doc">valid</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="ad56b9081ce748b461450ca49a76a4913">
-              <span class="m-doc-wrap-bumper">auto <a href="#ad56b9081ce748b461450ca49a76a4913" class="m-doc-self">index</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; uint8_t -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Checks if the position is valid.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a67c1395542c342d260eb1ee72c02b9d5" class="m-doc">index</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; int_t -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="abb2537acf881f96c059449d47b3337a6">
-              <span class="m-doc-wrap-bumper">auto <a href="#abb2537acf881f96c059449d47b3337a6" class="m-doc-self">x</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; uint8_t -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Returns the linear index of the position.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a355f8c7545bea8488a672c016181127c" class="m-doc">x</a>(</span><span class="m-doc-wrap">) const -&gt; int_t -&gt; auto</span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="aeeda63bfc332c3f1579aef6745fe1f6e">
-              <span class="m-doc-wrap-bumper">auto <a href="#aeeda63bfc332c3f1579aef6745fe1f6e" class="m-doc-self">y</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; uint8_t -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Returns the x-coordinate (column) of the position.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a5d0a2c8ea8cd2f155e380d3f24bcee82" class="m-doc">y</a>(</span><span class="m-doc-wrap">) const -&gt; int_t -&gt; auto</span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a69330b0aded88c01f8759a2f5ddf75e4">
-              <span class="m-doc-wrap-bumper">auto <a href="#a69330b0aded88c01f8759a2f5ddf75e4" class="m-doc-self">rotate</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; Position -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Returns the y-coordinate (row) of the position.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a69330b0aded88c01f8759a2f5ddf75e4" class="m-doc">rotate</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; Position -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="aea2a1be8ff3c01ecb41011de23fcdb2e">
-              <span class="m-doc-wrap-bumper">auto <a href="#aea2a1be8ff3c01ecb41011de23fcdb2e" class="m-doc-self">toString</a>(</span><span class="m-doc-wrap">) const -&gt; std::string -&gt; auto</span>
+            <dd>Rotates the position 180 degrees on the board.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#aea2a1be8ff3c01ecb41011de23fcdb2e" class="m-doc">toString</a>(</span><span class="m-doc-wrap">) const -&gt; std::string -&gt; auto</span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="ab66e91d51971c96f37ed07b3376cedbc">
-              <span class="m-doc-wrap-bumper">auto <a href="#ab66e91d51971c96f37ed07b3376cedbc" class="m-doc-self">operator==</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Converts the position to its algebraic notation string representation.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ab66e91d51971c96f37ed07b3376cedbc" class="m-doc">operator==</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a62a4c3138f7b74efacd0039941a207db">
-              <span class="m-doc-wrap-bumper">auto <a href="#a62a4c3138f7b74efacd0039941a207db" class="m-doc-self">operator!=</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Equality comparison operator.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a62a4c3138f7b74efacd0039941a207db" class="m-doc">operator!=</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
-            <dt id="a99c4aa4b1a2452bba31887488d571dfc">
-              <span class="m-doc-wrap-bumper">auto <a href="#a99c4aa4b1a2452bba31887488d571dfc" class="m-doc-self">operator&lt;</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            <dd>Inequality comparison operator.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a99c4aa4b1a2452bba31887488d571dfc" class="m-doc">operator&lt;</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
             </dt>
-            <dd><span></span></dd>
+            <dd>Less than comparison operator.</dd>
           </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="a8c8f25d9e7803c1cf41fbd36f3e05baf"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"> bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a8c8f25d9e7803c1cf41fbd36f3e05baf" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap">) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Default constructor.</p>
+<p>Initializes the position to an invalid state.</p>
+          </div></section>
+          <section class="m-doc-details" id="a89a226e4823137e88b6a731633f7dcce"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"> bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a89a226e4823137e88b6a731633f7dcce" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap"><a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> index) <span class="m-label m-info">explicit</span>  <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Explicit constructor from a linear index.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">index</td>
+                  <td>The linear index of the position (0-63).</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Initializes the position with the given index. If the index is out of the valid range (0-63), the position is invalidated.</p>
+          </div></section>
+          <section class="m-doc-details" id="a2fdbd3bdeb9281291e01bfd55bc129de"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"> bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a2fdbd3bdeb9281291e01bfd55bc129de" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap"><a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> x_pos,
+              <a href="#a354704ee76dc78b22bb1472642875232" class="m-doc">int_<wbr />t</a> y_pos) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Constructor from x and y coordinates.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">x_pos</td>
+                  <td>The x-coordinate (column) of the position (0-7).</td>
+                </tr>
+                <tr>
+                  <td>y_pos</td>
+                  <td>The y-coordinate (row) of the position (0-7).</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Initializes the position with the given x and y coordinates (0-7). The x-coordinate represents the column (A=0, H=7), and the y-coordinate represents the row (1=0, 8=7). If the coordinates are out of the valid range, the position is invalidated.</p>
+          </div></section>
+          <section class="m-doc-details" id="a1802ff8501912fd341352d0bc8b486ef"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper"> bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1802ff8501912fd341352d0bc8b486ef" class="m-doc-self">Position</a>(</span><span class="m-doc-wrap">std::string_view string) <span class="m-label m-info">explicit</span>  <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Explicit constructor from a string representation (e.g., &quot;a1&quot;, &quot;H8&quot;).</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">string</td>
+                  <td>The algebraic notation string representing the position.</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Initializes the position from a standard algebraic notation string. The string should be two characters long, with the first character being a lowercase letter from &#x27;a&#x27; to &#x27;h&#x27; (representing the column) and the second character being a digit from &#x27;1&#x27; to &#x27;8&#x27; (representing the row). If the string is invalid, the position is invalidated.</p>
+          </div></section>
+          <section class="m-doc-details" id="a67a5736df001c794ddd8f4dfe4c7aea4"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a67a5736df001c794ddd8f4dfe4c7aea4" class="m-doc-self">valid</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Checks if the position is valid.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>True if the position is valid, false otherwise.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>A position is considered valid if its internal index is within the range 0 to 63.</p>
+          </div></section>
+          <section class="m-doc-details" id="a67c1395542c342d260eb1ee72c02b9d5"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a67c1395542c342d260eb1ee72c02b9d5" class="m-doc-self">index</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; int_t <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Returns the linear index of the position.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The linear index of the position.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>The index ranges from 0 (A1) to 63 (H8).</p>
+          </div></section>
+          <section class="m-doc-details" id="a355f8c7545bea8488a672c016181127c"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a355f8c7545bea8488a672c016181127c" class="m-doc-self">x</a>(</span><span class="m-doc-wrap">) const -&gt; int_t</span></span>
+            </h3>
+            <p>Returns the x-coordinate (column) of the position.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The x-coordinate of the position.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>The x-coordinate ranges from 0 (A) to 7 (H).</p>
+          </div></section>
+          <section class="m-doc-details" id="a5d0a2c8ea8cd2f155e380d3f24bcee82"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5d0a2c8ea8cd2f155e380d3f24bcee82" class="m-doc-self">y</a>(</span><span class="m-doc-wrap">) const -&gt; int_t</span></span>
+            </h3>
+            <p>Returns the y-coordinate (row) of the position.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The y-coordinate of the position.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>The y-coordinate ranges from 0 (rank 1) to 7 (rank 8).</p>
+          </div></section>
+          <section class="m-doc-details" id="a69330b0aded88c01f8759a2f5ddf75e4"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a69330b0aded88c01f8759a2f5ddf75e4" class="m-doc-self">rotate</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; Position <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Rotates the position 180 degrees on the board.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>A new <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> object representing the rotated position. Returns an invalid <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> if the original is invalid.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>This operation effectively mirrors the position across the center of the board. An invalid position remains invalid after rotation.</p>
+          </div></section>
+          <section class="m-doc-details" id="aea2a1be8ff3c01ecb41011de23fcdb2e"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aea2a1be8ff3c01ecb41011de23fcdb2e" class="m-doc-self">toString</a>(</span><span class="m-doc-wrap">) const -&gt; std::string</span></span>
+            </h3>
+            <p>Converts the position to its algebraic notation string representation.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The algebraic notation string of the position.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>For example, index 0 becomes &quot;a1&quot;, and index 63 becomes &quot;h8&quot;.</p>
+          </div></section>
+          <section class="m-doc-details" id="ab66e91d51971c96f37ed07b3376cedbc"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ab66e91d51971c96f37ed07b3376cedbc" class="m-doc-self">operator==</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Equality comparison operator.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">pos</td>
+                  <td>The other <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> object to compare with.</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>True if the positions are equal, false otherwise.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>Checks if two <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> objects represent the same position on the board.</p>
+          </div></section>
+          <section class="m-doc-details" id="a62a4c3138f7b74efacd0039941a207db"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a62a4c3138f7b74efacd0039941a207db" class="m-doc-self">operator!=</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Inequality comparison operator.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">pos</td>
+                  <td>The other <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> object to compare with.</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>True if the positions are different, false otherwise.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>Checks if two <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> objects represent different positions on the board.</p>
+          </div></section>
+          <section class="m-doc-details" id="a99c4aa4b1a2452bba31887488d571dfc"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto bitboard::<wbr />Position::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a99c4aa4b1a2452bba31887488d571dfc" class="m-doc-self">operator&lt;</a>(</span><span class="m-doc-wrap">const <a href="classbitboard_1_1Position.html" class="m-doc">Position</a>&amp; pos) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Less than comparison operator.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">pos</td>
+                  <td>The other <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> object to compare with.</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>True if the current position&#x27;s index is less than the other position&#x27;s index, false otherwise.</td>
+                </tr>
+              </tfoot>
+            </table>
+<p>Compares two <a href="classbitboard_1_1Position.html" class="m-doc">Position</a> objects based on their internal index.</p>
+          </div></section>
         </section>
       </div>
     </div>
