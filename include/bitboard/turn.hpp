@@ -151,8 +151,8 @@ private:
 static_assert(sizeof(Turn) == 2, "Turn must be exactly 2 bytes!");
 
 constexpr Turn::Turn(Position from, Position to) noexcept
-    : m_from(from.index())
-    , m_to(to.index())
+    : m_from(static_cast<uint16_t>(from.index()))
+    , m_to(static_cast<uint16_t>(to.index()))
 {
   if (!from.valid() || !to.valid()) {
     m_from = 0;
@@ -161,8 +161,8 @@ constexpr Turn::Turn(Position from, Position to) noexcept
 }
 
 constexpr Turn::Turn(Position from, Position to, Figure figure) noexcept
-    : m_from(from.index())
-    , m_to(to.index())
+    : m_from(static_cast<uint16_t>(from.index()))
+    , m_to(static_cast<uint16_t>(to.index()))
     , m_figure(static_cast<uint16_t>(figure))
 {
   if (!from.valid() || !to.valid() || figure == Figure::kEmpty
