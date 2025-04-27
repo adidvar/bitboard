@@ -150,9 +150,12 @@ private:
  */
 static_assert(sizeof(Turn) == 2, "Turn must be exactly 2 bytes!");
 
+constexpr uint8_t kTurnPositionMask = 0x3F;
+constexpr uint8_t kTurnFigureMask = 0x07;
+
 constexpr Turn::Turn(Position from, Position to) noexcept
-    : m_from(static_cast<uint16_t>(from.index()))
-    , m_to(static_cast<uint16_t>(to.index()))
+    : m_from(from.index() & kTurnPositionMask)
+    , m_to(to.index() & kTurnPositionMask)
 {
   if (!from.valid() || !to.valid()) {
     m_from = 0;
@@ -161,9 +164,9 @@ constexpr Turn::Turn(Position from, Position to) noexcept
 }
 
 constexpr Turn::Turn(Position from, Position to, Figure figure) noexcept
-    : m_from(static_cast<uint16_t>(from.index()))
-    , m_to(static_cast<uint16_t>(to.index()))
-    , m_figure(static_cast<uint16_t>(figure))
+    : m_from(from.index()& kTurnPositionMask)
+    , m_to(to.index()& kTurnPositionMask)
+    , m_figure(static_cast<uint16_t>(figure) & kTurnFigureMask)
 {
   if (!from.valid() || !to.valid() || figure == Figure::kEmpty
       || figure == Figure::kPawn || figure == Figure::kBKing)
@@ -204,9 +207,9 @@ inline Turn::Turn(std::string_view chess_format)
     }
   }
   if (from_pos.valid() && to_pos.valid()) {
-    m_from = from_pos.index();
-    m_to = to_pos.index();
-    m_figure = static_cast<uint16_t>(figure);
+    m_from = from_pos.index()& kTurnPositionMask;
+    m_to = to_pos.index()& kTurnPositionMask;
+    m_figure = static_cast<uint16_t>(figure) &kTurnFigureMask;
   }
 }
 
