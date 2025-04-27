@@ -16,17 +16,20 @@ namespace bitboard
 class ParseFenError : public std::exception
 {
 public:
-    ParseFenError(std::string_view fen, std::string_view error): m_fen(fen), m_error(error){
+  ParseFenError(std::string_view fen, std::string_view error)
+      : m_fen(fen)
+      , m_error(error)
+  {
+  }
 
-    }
 private:
   /**
-* @brief The FEN string that failed to parse.
-*/
+   * @brief The FEN string that failed to parse.
+   */
   std::string m_fen;
   /**
-* @brief A description of the parsing error.
-*/
+   * @brief A description of the parsing error.
+   */
   std::string m_error;
 };
 
@@ -61,16 +64,15 @@ public:
   static std::string toFen(const BitBoard& board);
 
 protected:
-  static bool parseFigures(BitBoard &board, std::string_view view);
-  static bool parseColor(BitBoard &board, std::string_view view);
-  static bool parseCastling(BitBoard &board, std::string_view view);
-  static bool parseElPassant(BitBoard &board, std::string_view view);
+  static bool parseFigures(BitBoard& board, std::string_view view);
+  static bool parseColor(BitBoard& board, std::string_view view);
+  static bool parseCastling(BitBoard& board, std::string_view view);
+  static bool parseElPassant(BitBoard& board, std::string_view view);
 
-  static void combineFigures(const BitBoard &board, std::string &str);
-  static void combineColor(const BitBoard &board, std::string &str);
-  static void combineCastling(const BitBoard &board, std::string &str);
-  static void combineElPassant(const BitBoard &board, std::string &str);
+  static void combineFigures(const BitBoard& board, std::string& str);
+  static void combineColor(const BitBoard& board, std::string& str);
+  static void combineCastling(const BitBoard& board, std::string& str);
+  static void combineElPassant(const BitBoard& board, std::string& str);
 };
-
 
 }  // namespace bitboard

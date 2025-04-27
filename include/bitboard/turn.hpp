@@ -164,8 +164,8 @@ constexpr Turn::Turn(Position from, Position to) noexcept
 }
 
 constexpr Turn::Turn(Position from, Position to, Figure figure) noexcept
-    : m_from(from.index()& kTurnPositionMask)
-    , m_to(to.index()& kTurnPositionMask)
+    : m_from(from.index() & kTurnPositionMask)
+    , m_to(to.index() & kTurnPositionMask)
     , m_figure(static_cast<uint16_t>(figure) & kTurnFigureMask)
 {
   if (!from.valid() || !to.valid() || figure == Figure::kEmpty
@@ -207,9 +207,9 @@ inline Turn::Turn(std::string_view chess_format)
     }
   }
   if (from_pos.valid() && to_pos.valid()) {
-    m_from = from_pos.index()& kTurnPositionMask;
-    m_to = to_pos.index()& kTurnPositionMask;
-    m_figure = static_cast<uint16_t>(figure) &kTurnFigureMask;
+    m_from = from_pos.index() & kTurnPositionMask;
+    m_to = to_pos.index() & kTurnPositionMask;
+    m_figure = static_cast<uint16_t>(figure) & kTurnFigureMask;
   }
 }
 

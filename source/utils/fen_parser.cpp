@@ -1,48 +1,50 @@
 #include <algorithm>
-#include <bitboard/utils/fen_parser.hpp>
-#include "bitboard/bitboard.hpp"
-#include "bitboard/figure.hpp"
-
 #include <array>
 #include <map>
 
-namespace {
+#include <bitboard/utils/fen_parser.hpp>
 
-using bitboard::Figure;
+#include "bitboard/bitboard.hpp"
+#include "bitboard/figure.hpp"
+
+namespace
+{
+
 using bitboard::BitBoard;
+using bitboard::Figure;
 
 constexpr const std::string_view kStartString = "startpos";
 
-constexpr  const char kCombineSeperator = ' ';
-constexpr  const std::array<char, 3> kParseSeperators {' ', '\n', '\t'};
+constexpr const char kCombineSeperator = ' ';
+constexpr const std::array<char, 3> kParseSeperators {' ', '\n', '\t'};
 
 const std::map<char, Figure> kStringToFigure {{' ', Figure::kEmpty},
-                                            {'p', Figure::kBPawn},
-                                            {'n', Figure::kBKnight},
-                                            {'b', Figure::kBBishop},
-                                            {'r', Figure::kBRook},
-                                            {'q', Figure::kBQueen},
-                                            {'k', Figure::kBKing},
-                                            {'P', Figure::kWPawn},
-                                            {'N', Figure::kWKnight},
-                                            {'B', Figure::kWBishop},
-                                            {'R', Figure::kWRook},
-                                            {'Q', Figure::kWQueen},
-                                            {'K', Figure::kWKing}};
+                                              {'p', Figure::kBPawn},
+                                              {'n', Figure::kBKnight},
+                                              {'b', Figure::kBBishop},
+                                              {'r', Figure::kBRook},
+                                              {'q', Figure::kBQueen},
+                                              {'k', Figure::kBKing},
+                                              {'P', Figure::kWPawn},
+                                              {'N', Figure::kWKnight},
+                                              {'B', Figure::kWBishop},
+                                              {'R', Figure::kWRook},
+                                              {'Q', Figure::kWQueen},
+                                              {'K', Figure::kWKing}};
 
 const std::map<Figure, char> kFigureToString = {{Figure::kEmpty, ' '},
-                                              {Figure::kBPawn, 'p'},
-                                              {Figure::kBKnight, 'n'},
-                                              {Figure::kBBishop, 'b'},
-                                              {Figure::kBRook, 'r'},
-                                              {Figure::kBQueen, 'q'},
-                                              {Figure::kBKing, 'k'},
-                                              {Figure::kWPawn, 'P'},
-                                              {Figure::kWKnight, 'N'},
-                                              {Figure::kWBishop, 'B'},
-                                              {Figure::kWRook, 'R'},
-                                              {Figure::kWQueen, 'Q'},
-                                              {Figure::kWKing, 'K'}};
+                                                {Figure::kBPawn, 'p'},
+                                                {Figure::kBKnight, 'n'},
+                                                {Figure::kBBishop, 'b'},
+                                                {Figure::kBRook, 'r'},
+                                                {Figure::kBQueen, 'q'},
+                                                {Figure::kBKing, 'k'},
+                                                {Figure::kWPawn, 'P'},
+                                                {Figure::kWKnight, 'N'},
+                                                {Figure::kWBishop, 'B'},
+                                                {Figure::kWRook, 'R'},
+                                                {Figure::kWQueen, 'Q'},
+                                                {Figure::kWKing, 'K'}};
 
 void skipSeperators(std ::string_view data, size_t& index)
 {
@@ -69,11 +71,13 @@ std::string_view readStringPart(std::string_view data, size_t& index)
   return data.substr(begin, end - begin);
 }
 
-bool parseNumber(std::string_view view){
-    return std::ranges::all_of(view, [](char digit) -> bool {return std::isdigit(digit);});
+bool parseNumber(std::string_view view)
+{
+  return std::ranges::all_of(
+      view, [](char digit) -> bool { return std::isdigit(digit); });
 }
 
-}
+}  // namespace
 
 /*
 void boardFromFen(std::string_view fen, bit_board& board, size_t& index)
@@ -270,72 +274,80 @@ std::string boardToFen(const bit_board& board)
 }
 */
 
-namespace bitboard{
+namespace bitboard
+{
 
 /*
-* rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-* 1) Figures part
-* 2) Color part
-* 3) Castling part
-* 4) El passant part
-* 5) Counter part
-* 6) Counter part
-*/
+ * rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+ * 1) Figures part
+ * 2) Color part
+ * 3) Castling part
+ * 4) El passant part
+ * 5) Counter part
+ * 6) Counter part
+ */
 
 std::variant<BitBoard, ParseFenError> BitBoardSerializer::parseFen(
     std::string_view fen, size_t& index)
 {
-    BitBoard board;
-    auto i = index;
+  BitBoard board;
+  auto i = index;
 
-    auto figures_part = readStringPart(fen, i);
+  auto figures_part = readStringPart(fen, i);
 
-    if(figures_part == kStartString) {
-        index = i;
-        return {kStartBitBoard};
-    }
-
-    if(!parseFigures(board,figures_part))
-        return ParseFenError(figures_part,"Failer to parse figures");
-
-    auto color_part = readStringPart(fen, i);
-    if(!parseColor(board,color_part))
-        return ParseFenError(color_part,"Failer to parse color");
-
-    auto castling_part = readStringPart(fen, i);
-    if(!parseCastling(board,castling_part))
-        return ParseFenError(castling_part,"Failer to parse castling");
-
-    auto elpassant_part = readStringPart(fen, i);
-    if(!parseElPassant(board,elpassant_part))
-        return ParseFenError(elpassant_part,"Failer to parse el-passant");
-
-    auto counter_1_part = readStringPart(fen, i);
-    if(!parseNumber(counter_1_part))
-        return ParseFenError(counter_1_part,"Failer to parse counter");
-
-    auto counter_2_part = readStringPart(fen, i);
-    if(!parseNumber(counter_2_part))
-        return ParseFenError(counter_2_part,"Failer to parse counter");
-
+  if (figures_part == kStartString) {
     index = i;
-    return {board};
+    return {kStartBitBoard};
+  }
+
+  if (!parseFigures(board, figures_part)) {
+    return ParseFenError(figures_part, "Failure to parse figures");
+  }
+
+  auto color_part = readStringPart(fen, i);
+  if (!parseColor(board, color_part)) {
+    return ParseFenError(color_part, "Failure to parse color");
+  }
+
+  auto castling_part = readStringPart(fen, i);
+  if (!parseCastling(board, castling_part)) {
+    return ParseFenError(castling_part, "Failure to parse castling");
+  }
+
+  auto elpassant_part = readStringPart(fen, i);
+  if (!parseElPassant(board, elpassant_part)) {
+    return ParseFenError(elpassant_part, "Failure to parse el-passant");
+  }
+
+  auto counter_1_part = readStringPart(fen, i);
+  if (!parseNumber(counter_1_part)) {
+    return ParseFenError(counter_1_part, "Failure to parse counter");
+  }
+
+  auto counter_2_part = readStringPart(fen, i);
+  if (!parseNumber(counter_2_part)) {
+    return ParseFenError(counter_2_part, "Failure to parse counter");
+  }
+
+  index = i;
+  return {board};
 }
 
-std::string BitBoardSerializer::toFen(const BitBoard& board) {
-    std::string result;
+std::string BitBoardSerializer::toFen(const BitBoard& board)
+{
+  std::string result;
 
-    combineFigures(board,result);
-    result.push_back(kCombineSeperator);
-    combineColor(board,result);
-    result.push_back(kCombineSeperator);
-    combineCastling(board,result);
-    result.push_back(kCombineSeperator);
-    combineElPassant(board,result);
-    result.push_back(kCombineSeperator);
-    result.append("0 1");
+  combineFigures(board, result);
+  result.push_back(kCombineSeperator);
+  combineColor(board, result);
+  result.push_back(kCombineSeperator);
+  combineCastling(board, result);
+  result.push_back(kCombineSeperator);
+  combineElPassant(board, result);
+  result.push_back(kCombineSeperator);
+  result.append("0 1");
 
-    return result;
+  return result;
 }
 
-}
+}  // namespace bitboard

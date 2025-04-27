@@ -1166,4 +1166,4 @@ bitboard::BitBoard::BitBoard(std::string_view fen_line) {}  // NOLINT
 
 std::string bitboard::BitBoard::fen() const {}  // NOLINT
 
-bitboard::Figure bitboard::BitBoard::get(Position position) const noexcept {}  // NOLINT
+bitboard::Figure bitboard::BitBoard::get(Position position) const noexcept { }  // NOLINT
