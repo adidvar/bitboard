@@ -24,7 +24,7 @@ add_library(
     source/position.cpp
     source/zobrist.cpp
     source/figure.cpp
-    source/fen.cpp
+    source/utils/fen_parser.cpp
 
     #headers
 

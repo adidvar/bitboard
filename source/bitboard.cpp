@@ -1,6 +1,5 @@
-// #include <algorithm>
 
-// #include "bitboard/bitboard.hpp"
+#include <bitboard/bitboard.hpp>
 
 // #include "bitboard/bitutils.hpp"
 // #include "bitboard/fen.hpp"
@@ -1162,3 +1161,9 @@
 // }
 
 // bit_board::bit_board(std::nullptr_t) {}
+
+bitboard::BitBoard::BitBoard(std::string_view fen_line) {}  // NOLINT
+
+std::string bitboard::BitBoard::fen() const {}  // NOLINT
+
+bitboard::Figure bitboard::BitBoard::get(Position position) const noexcept {}  // NOLINT

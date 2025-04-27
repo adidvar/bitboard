@@ -91,7 +91,7 @@ public:
    * @brief Gets the current turn number.
    * @return The current turn number.
    */
-  [[nodiscard]] Turn turn() const;
+  [[nodiscard]] constexpr Turn turn() const;
   /**
    * @brief Generates the FEN string representation of the current board state.
    * @return The FEN string.
@@ -101,17 +101,22 @@ public:
    * @brief Calculates and returns the Zobrist hash of the current board state.
    * @return The board hash.
    */
-  [[nodiscard]] bitboard_hash hash() const;
+  [[nodiscard]] constexpr bitboard_hash hash() const;
   /**
    * @brief Gets the side whose turn it is.
    * @return The color (side) whose turn it is.
    */
-  [[nodiscard]] Color side() const noexcept;
+  [[nodiscard]] constexpr Color side() const noexcept;
+  /**
+   * @brief Gets the state of certain flag.
+   * @return The state.
+   */
+  [[nodiscard]] constexpr bool checkFlag(Flags flag) const noexcept;
   /**
    * @brief Gets the current board flags.
    * @return The current flags.
    */
-  [[nodiscard]] Flags flags() const noexcept;
+  [[nodiscard]] constexpr Flags flags() const noexcept;
   /**
    * @brief Gets the figure at a specific position on the board.
    * @param position The position to get the figure from.
@@ -196,13 +201,15 @@ protected:
    * @note This signature looks like a method, not a member variable. If it's
    * intended as a variable, the declaration is incomplete.
    */
-  Turn m_prev_turn();
+  Turn m_prev_turn;
 
   /**
    * @brief Flags representing the current board state (e.g., castling rights,
    * en passant).
    */
   Flags m_flags = Flags::kFlagsDefault;
+
+  friend class BitBoardSerializer;
 };
 
 /**
@@ -215,5 +222,30 @@ BITBOARD_EXPORT extern const char* const kStartPosition;
  * position.
  */
 BITBOARD_EXPORT extern const BitBoard kStartBitBoard;
+
+constexpr Turn BitBoard::turn() const
+{
+  return m_prev_turn;
+}
+
+constexpr bitboard_hash BitBoard::hash() const
+{
+  return m_hash;
+}
+
+constexpr Color BitBoard::side() const noexcept
+{
+  return checkFlag(Flags::kFlagsColor) ? Color::kBlack : Color::kWhite;
+}
+
+constexpr bool BitBoard::checkFlag(Flags flag) const noexcept
+{
+  return (static_cast<uint>(m_flags) & static_cast<uint>(flag)) != 0;
+}
+
+constexpr BitBoard::Flags BitBoard::flags() const noexcept
+{
+  return m_flags;
+}
 
 }  // namespace bitboard
